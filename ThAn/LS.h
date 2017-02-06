@@ -22,6 +22,7 @@ public:
         float **y_p;
         float **z_p;
         int **sintering_flag;
+        int ***neighbors;
         float *r_p;
     };
     ParProps PP;

@@ -21,6 +21,7 @@ PowBed::PowBed(int grid, int par)
     PP.x_p = new float*[grid];
     PP.y_p = new float*[grid];
     PP.z_p = new float*[grid];
+    PP.neighbors = new int**[grid];
     PP.sintering_flag = new int*[grid];
 
     // Create a row for every pointer
@@ -30,6 +31,7 @@ PowBed::PowBed(int grid, int par)
        PP.x_p[i] = new float[par];
        PP.y_p[i] = new float[par];
        PP.z_p[i] = new float[par];
+       PP.neighbors[i] = new int*[par];
        PP.sintering_flag[i] = new int[par];
 
        // Initialize all locations are zero
@@ -37,6 +39,12 @@ PowBed::PowBed(int grid, int par)
        memset(PP.y_p[i], 0.0, par*sizeof(float));
        memset(PP.z_p[i], 0.0, par*sizeof(float));
        memset(PP.sintering_flag[i], 0.0, par*sizeof(int));
+
+       for (int j = 0; j < par; ++j)
+       {
+          PP.neighbors[i][j] = new int[15];
+          memset(PP.neighbors[i][j], 0.0, 15*sizeof(int));
+        }
     }
 
     PP.r_p = new float [par];
@@ -139,7 +147,7 @@ void PowBed::SetInitials(int grid, int par)
     {
       for (int c1 = 0; c1 < par; ++c1)
       {
-        neighbor_particles[counter] = c1 + (c - 1 + 1)*1000; // +1 because the total cell number starts from 0 but 0*1000=0 so the difference wouldn't be obvious therefore we add 1 then subtract it later on
+        neighbor_particles[counter] = c1 + (c)*1000; // +1 because the total cell number starts from 0 but 0*1000=0 so the difference wouldn't be obvious therefore we add 1 then subtract it later on
         counter = counter + 1;
       }
     }
@@ -148,7 +156,7 @@ void PowBed::SetInitials(int grid, int par)
     {
       for (int c1 = 0; c1 < par; ++c1)
       {
-        neighbor_particles[counter] = c1 + (c - num_grid_x + 1)*1000;
+        neighbor_particles[counter] = c1 + (c)*1000;
         counter = counter + 1;
       }
     }
@@ -157,7 +165,7 @@ void PowBed::SetInitials(int grid, int par)
     {
       for (int c1 = 0; c1 < par; ++c1)
       {
-        neighbor_particles[counter] = c1 + (c - num_grid_x*num_grid_y + 1)*1000;
+        neighbor_particles[counter] = c1 + (c)*1000;
         counter = counter + 1;
       }
     }
@@ -194,7 +202,7 @@ void PowBed::SetInitials(int grid, int par)
           // For particles in the adjacent cells
           else
           {
-            neighbor_cell = (neighbor_particles[j]/1000) - 1; // Because the total cell count starts from 0 and xyz count starts from 1
+            neighbor_cell = (neighbor_particles[j]/1000); // Because the total cell count starts from 0 and xyz count starts from 1
             // if ((k == 0) && (i == 0) && (j == par))
             //   cout << neighbor_cell << endl;
             if (neighbor_cell != 0)
@@ -212,72 +220,72 @@ void PowBed::SetInitials(int grid, int par)
             }
           }
         }
-        // if (q >= 1)
-        // {
-        //   PP.x_p[c][i] = x_particle_middle/q;
-        //   PP.y_p[c][i] = y_particle_middle/q;
-        //   PP.z_p[c][i] = z_particle_middle/q;
+        if (q >= 1)
+        {
+          PP.x_p[c][i] = x_particle_middle/q;
+          PP.y_p[c][i] = y_particle_middle/q;
+          PP.z_p[c][i] = z_particle_middle/q;
 
-        //   // Particles can't go over the overall boundaries of the PB
-        //   if ((cell_x_num[c] == num_grid_x) && (PP.x_p[c][i] >= (grid_x*cell_x_num[c] - PP.r_p[i])))
-        //     PP.x_p[c][i] = (grid_x - PP.r_p[i]);
-        //   if ((cell_y_num[c] == num_grid_y) && (PP.y_p[c][i] >= (grid_y*cell_y_num[c] - PP.r_p[i])))
-        //     PP.y_p[c][i] = (grid_y - PP.r_p[i]);
-        //   if ((cell_z_num[c] == num_grid_z) && (PP.z_p[c][i] >= (grid_z*cell_z_num[c] - PP.r_p[i])))
-        //    PP.z_p[c][i] = (grid_z - PP.r_p[i]);
-        //   // Particles can't go below a certain amount of the previous cell
-        //   if (PP.x_p[c][i] <= (0.9*grid_x*(cell_x_num[c] - 1.0) + PP.r_p[i]))
-        //     PP.x_p[c][i] = (0.9*grid_x*(cell_x_num[c] - 1.0) + PP.r_p[i]);
-        //   if (PP.y_p[c][i] <= (0.9*grid_y*(cell_y_num[c] - 1.0) + PP.r_p[i]))
-        //     PP.y_p[c][i] = (0.9*grid_y*(cell_y_num[c] - 1.0) + PP.r_p[i]);
-        //   if (PP.z_p[c][i] <= (0.9*grid_z*(cell_z_num[c] - 1.0) + PP.r_p[i]))
-        //     PP.z_p[c][i] = (0.9*grid_z*(cell_z_num[c] - 1.0) + PP.r_p[i]);
-        //   // Particles can't go below the general size of the PB
-        //   if ((cell_x_num[c] == 1) && (PP.x_p[c][i] <= (grid_x*(cell_x_num[c] - 1) + PP.r_p[i])))
-        //     PP.x_p[c][i] = PP.r_p[i];
-        //   if ((cell_y_num[c] == 1) && (PP.y_p[c][i] <= (grid_y*(cell_y_num[c] - 1) + PP.r_p[i])))
-        //     PP.y_p[c][i] = PP.r_p[i];
-        //   if ((cell_z_num[c] == 1) && (PP.z_p[c][i] <= (grid_z*(cell_z_num[c] - 1) + PP.r_p[i])))
-        //     PP.z_p[c][i] = PP.r_p[i];
-        // }
+          // Particles can't go over the overall boundaries of the PB
+          if ((cell_x_num[c] == num_grid_x) && (PP.x_p[c][i] >= (grid_x*cell_x_num[c] - PP.r_p[i])))
+            PP.x_p[c][i] = (grid_x - PP.r_p[i]);
+          if ((cell_y_num[c] == num_grid_y) && (PP.y_p[c][i] >= (grid_y*cell_y_num[c] - PP.r_p[i])))
+            PP.y_p[c][i] = (grid_y - PP.r_p[i]);
+          if ((cell_z_num[c] == num_grid_z) && (PP.z_p[c][i] >= (grid_z*cell_z_num[c] - PP.r_p[i])))
+           PP.z_p[c][i] = (grid_z - PP.r_p[i]);
+          // Particles can't go below a certain amount of the previous cell
+          if (PP.x_p[c][i] <= (0.9*grid_x*(cell_x_num[c] - 1.0) + PP.r_p[i]))
+            PP.x_p[c][i] = (0.9*grid_x*(cell_x_num[c] - 1.0) + PP.r_p[i]);
+          if (PP.y_p[c][i] <= (0.9*grid_y*(cell_y_num[c] - 1.0) + PP.r_p[i]))
+            PP.y_p[c][i] = (0.9*grid_y*(cell_y_num[c] - 1.0) + PP.r_p[i]);
+          if (PP.z_p[c][i] <= (0.9*grid_z*(cell_z_num[c] - 1.0) + PP.r_p[i]))
+            PP.z_p[c][i] = (0.9*grid_z*(cell_z_num[c] - 1.0) + PP.r_p[i]);
+          // Particles can't go below the general size of the PB
+          if ((cell_x_num[c] == 1) && (PP.x_p[c][i] <= (grid_x*(cell_x_num[c] - 1) + PP.r_p[i])))
+            PP.x_p[c][i] = PP.r_p[i];
+          if ((cell_y_num[c] == 1) && (PP.y_p[c][i] <= (grid_y*(cell_y_num[c] - 1) + PP.r_p[i])))
+            PP.y_p[c][i] = PP.r_p[i];
+          if ((cell_z_num[c] == 1) && (PP.z_p[c][i] <= (grid_z*(cell_z_num[c] - 1) + PP.r_p[i])))
+            PP.z_p[c][i] = PP.r_p[i];
+        }
       }
     }
     // Find neighbors of particles
-    // int q2;
-    // for (int i = 0; i < par; ++i)
-    // {
-    //   q2 = 0;
-    //   for (int j = 0; j < 4*par; ++j)
-    //   {
-    //     // For particles in the same cell
-    //     if (j < par)
-    //     {
-    //       if (j != i)
-    //       {
-    //         if (fabs(PP.r_p[i] + PP.r_p[j] - pow(pow(PP.x_p[c][i] - PP.x_p[c][j], 2.0) + pow(PP.y_p[c][i] - PP.y_p[c][j], 2.0) + pow(PP.z_p[c][i] - PP.z_p[c][j], 2.0), 0.5)) < 0.000001)
-    //         {
-    //           PP.neighbors[c][i][q2] = j;
-    //           q2 = q2 + 1;
-    //         }
-    //       }
-    //     }
-    //     // For particles in the adjacent cells
-    //     else
-    //     {
-    //       neighbor_cell = (neighbor_particles[j]/1000) - 1; // Because the total cell count starts from 0 and xyz count starts from 1
-    //       if (neighbor_cell != 0)
-    //         neighbor_part = (neighbor_particles[j] % (neighbor_cell*1000));
-    //       if ((neighbor_cell != 0) && (neighbor_part != 0))
-    //       {
-    //         if (fabs(PP.r_p[i] + PP.r_p[neighbor_part] - sqrt(pow(PP.x_p[c][i] - PP.x_p[neighbor_cell][neighbor_part], 2.0) + pow(PP.y_p[c][i] - PP.y_p[neighbor_cell][neighbor_part], 2.0) + pow(PP.z_p[c][i] - PP.z_p[neighbor_cell][neighbor_part], 2.0))) < 0.000001)
-    //         {
-    //           PP.neighbors[c][i][q2] = neighbor_particles[j];
-    //           q2 = q2 + 1;
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
+    int q2;
+    for (int i = 0; i < par; ++i)
+    {
+      q2 = 0;
+      for (int j = 0; j < 4*par; ++j)
+      {
+        // For particles in the same cell
+        if (j < par)
+        {
+          if (j != i)
+          {
+            if (fabs(PP.r_p[i] + PP.r_p[j] - pow(pow(PP.x_p[c][i] - PP.x_p[c][j], 2.0) + pow(PP.y_p[c][i] - PP.y_p[c][j], 2.0) + pow(PP.z_p[c][i] - PP.z_p[c][j], 2.0), 0.5)) < 0.000001)
+            {
+              PP.neighbors[c][i][q2] = j;
+              q2 = q2 + 1;
+            }
+          }
+        }
+        // For particles in the adjacent cells
+        else
+        {
+          neighbor_cell = (neighbor_particles[j]/1000); // Because the total cell count starts from 0 and xyz count starts from 1
+          if (neighbor_cell != 0)
+            neighbor_part = (neighbor_particles[j] % (neighbor_cell*1000));
+          if ((neighbor_cell != 0) && (neighbor_part != 0))
+          {
+            if (fabs(PP.r_p[i] + PP.r_p[neighbor_part] - sqrt(pow(PP.x_p[c][i] - PP.x_p[neighbor_cell][neighbor_part], 2.0) + pow(PP.y_p[c][i] - PP.y_p[neighbor_cell][neighbor_part], 2.0) + pow(PP.z_p[c][i] - PP.z_p[neighbor_cell][neighbor_part], 2.0))) < 0.000001)
+            {
+              PP.neighbors[c][i][q2] = neighbor_particles[j];
+              q2 = q2 + 1;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
