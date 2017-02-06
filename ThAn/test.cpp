@@ -14,6 +14,11 @@ int main()
 
 
     g.SetInitials(grid, par);
+
+    float power = 10; // Laser power (watts)
+    float speed = 1; // Laser beam speed (mm/s)
+    g.Sintering(power, speed);
+    
     g.print();
  	g.PowDel();
     return 0;

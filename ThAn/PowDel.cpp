@@ -15,9 +15,13 @@ void PowBed::PowDel()
       delete[] PP.x_p[i];
       delete[] PP.y_p[i];
       delete[] PP.z_p[i];
+      delete[] PP.T_p[i];
+      delete[] PP.delta_T_p[i];
     }
    delete[] PP.x_p;
    delete[] PP.y_p;
    delete[] PP.z_p;
    delete[] PP.r_p;
+   delete[] PP.T_p;
+   delete[] PP.delta_T_p;
  }

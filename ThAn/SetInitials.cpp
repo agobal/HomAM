@@ -14,6 +14,7 @@ void PowBed::SetInitials(int grid, int par)
   num_grid_y = 4;
   num_grid_z = 4;
 
+
   PP.avgrd = 0.0125;
   PP.stddev = 0.005;
 
