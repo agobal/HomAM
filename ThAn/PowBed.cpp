@@ -255,7 +255,7 @@ void PowBed::SetInitials(int grid, int par)
     for (int i = 0; i < par; ++i)
     {
       q2 = 0;
-      for (int j = 0; j < 4*par; ++j)
+      for (int j = 0; j < 4*par; ++)
       {
         // For particles in the same cell
         if (j < par)
