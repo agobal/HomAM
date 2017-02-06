@@ -31,7 +31,10 @@ void PowBed::Sintering(float power, float speed)
             if (PP.neighbors[cell][particle][j] < 1000)
             {
               neigh = PP.neighbors[cell][particle][j];
-              
+              // function to calculated the conduction coefficient between powder particles
+              // Calculate the heat transfer between neighbors
+              // Calculate the  heat input from the laser beam
+              // Calculate displacement of powder particles from the sintering degree (dozaria...)
             }
           }
         }
