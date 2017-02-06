@@ -29,8 +29,10 @@ public:
 
     PowBed(int grid, int par);   // Constructor
 
-    // function to add an edge to graph
+    // function to set initial location of powder particles
     void SetInitials(int grid, int par);
+    // Function to print results onto the screen
     void print();
+    // Function to clear the heap memory after the program's done
     void PowDel();   // Delete
 };
