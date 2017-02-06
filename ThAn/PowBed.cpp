@@ -281,7 +281,6 @@ void PowBed::SetInitials(int grid, int par)
             {
               PP.neighbors[c][i][q2] = neighbor_particles[j];
               q2 = q2 + 1;
-              1;
             }
           }
         }
