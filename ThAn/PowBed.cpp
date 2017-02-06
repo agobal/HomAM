@@ -257,7 +257,7 @@ void PowBed::SetInitials(int grid, int par)
       q2 = 0;
       for (int j = 0; j < 4*par; ++j)
       {
-        // For particles in the same cell
+        /// For particles in the same cell
         if (j < par)
         {
           if (j != i)
@@ -281,6 +281,7 @@ void PowBed::SetInitials(int grid, int par)
             {
               PP.neighbors[c][i][q2] = neighbor_particles[j];
               q2 = q2 + 1;
+              1;
             }
           }
         }
