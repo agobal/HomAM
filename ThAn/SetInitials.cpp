@@ -10,9 +10,9 @@ using namespace std;
 // Function for setting the initial location of powder particles inside the packing
 void PowBed::SetInitials(int grid, int par)
 {
-  num_grid_x = 4;
-  num_grid_y = 4;
-  num_grid_z = 4;
+  num_grid_x = 1;
+  num_grid_y = 1;
+  num_grid_z = 1;
 
 
   PP.avgrd = 0.0125;
