@@ -15,6 +15,16 @@ void PowBed::Sintering(float power, float speed)
 
   int Q; // Total heat delivered to each particle at each point in time
   int neigh; // intermediate variable for neighbor value
+
+  // Initial temperature of powder particles
+  for (int cell = 0; cell < grid; ++cell)
+  {
+    for (int particle = 0; particle < par; ++particle)
+    {
+      PP.T_p[cell][particle] = 100;
+    }
+  }
+
   // Go through the loop for performing the laser sintering (in the y direction)
   for (int i = 0; i < 1000; ++i)
   {
