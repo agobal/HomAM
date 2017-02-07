@@ -12,16 +12,11 @@ public:
     float grid_y;
     float grid_z;
 
-    // Mechanical properties of powders
-    float E; // Young's modulus
-    float nu; // Poisson's ratio
-    float k1; // Thermal conductivity of particle 1
-    float k2; // Thermal conductivity of particle 2
-    float k_air; // Thermal conductivity of air
-
     // Sintering properties
     float W;    // Laser power
     float dt;   // Sintering timestep
+    float K_F;
+    float Laser_Intensity; 
 
     // arrays for x, y and z location of the powder particles
     struct ParProps
@@ -38,7 +33,8 @@ public:
         int ***neighbors;
         float *r_p;
         float **T_p;            // Particle temperature
-        float **delta_T_p;      // delta particle temperature (over time)
+        float **T_temp;      // delta particle temperature (over time)
+        float **E;          // Internal energy of powder particles
     };
     ParProps PP;
 
@@ -49,6 +45,12 @@ public:
 
     // Function for carrying out the heat transfer simulation
     void Sintering(float powder, float speed);
+
+    // Function for calculating the heat transfer coefficient between powders and their location change
+    void CondCoeff(int cell1, int par1, int cell2, int par2, float delta_t);
+
+    // Calculating the laser beam intensity
+    void LaserBeam(int cell, int particle, float speed, int i, float delta_t);
 
     // Function to print results onto the screen
     void print();

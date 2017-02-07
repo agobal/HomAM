@@ -31,13 +31,38 @@ void PowBed::Sintering(float power, float speed)
             if (PP.neighbors[cell][particle][j] < 1000)
             {
               neigh = PP.neighbors[cell][particle][j];
-              // function to calculated the conduction coefficient between powder particles
+              // function to calculate the conduction coefficient between powder particles
+              CondCoeff(cell, particle, cell, neigh, dt);
               // Calculate the heat transfer between neighbors
-              // Calculate the  heat input from the laser beam
-              // Calculate displacement of powder particles from the sintering degree (dozaria...)
+              Q = Q + K_F*(PP.T_p[cell][particle] - PP.T_p[cell][neigh]);
+            }
+            else
+            {
+              int cell2 = (PP.neighbors[cell][particle][j]/1000);
+              if (cell2 != 0)
+                neigh = (PP.neighbors[cell][particle][j] % (cell2*1000));
+              CondCoeff(cell, particle, cell2, neigh, dt);
+              Q = Q + K_F*(PP.T_p[cell][particle] - PP.T_p[cell2][neigh]);
             }
           }
+          // Heat input from the laser beam
+          LaserBeam(cell, particle, speed, i, dt);
+
+          float S = 4.0*atan(1)*PP.r_p[particle]*PP.r_p[particle];    // Particle surface absorbing the laser powder
+          float rho = 7800;
+          float K_ab = 0.3;
+          float solid_heat_capacity = 477;
+          PP.E[cell][particle] = PP.E[cell][particle] + (Q + K_ab*S*Laser_Intensity*dt/(rho*(4.0/3.0)*4.0*atan(1)*pow(PP.r_p[particle], 3))); //particle energy increase by laser
+          PP.T_temp[cell][particle] = PP.E[cell][particle]/solid_heat_capacity; // Particle temperature change
         }
+      }
+    }
+    // Populating the temperature array
+    for (int cell = 0; cell < grid; ++cell)
+    {
+      for (int particle = 0; particle < par; ++particle)
+      {
+        PP.T_p[cell][particle] = PP.T_temp[cell][particle];
       }
     }
   }

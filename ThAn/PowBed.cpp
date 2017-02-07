@@ -25,7 +25,8 @@ PowBed::PowBed(int grid, int par)
     PP.sintering_flag = new int*[grid];
 
     PP.T_p = new float*[grid];
-    PP.delta_T_p = new float*[grid];
+    PP.T_temp = new float*[grid];
+    PP.E = new float*[grid];
 
     // Create a row for every pointer
     for (int i=0; i<grid; i++)
@@ -38,7 +39,8 @@ PowBed::PowBed(int grid, int par)
        PP.sintering_flag[i] = new int[par];
 
        PP.T_p[i] = new float[par];
-       PP.delta_T_p[i] = new float[par];
+       PP.T_temp[i] = new float[par];
+       PP.E[i] = new float[par];
 
        // Initialize all locations are zero
        memset(PP.x_p[i], 0.0, par*sizeof(float));
@@ -46,7 +48,8 @@ PowBed::PowBed(int grid, int par)
        memset(PP.z_p[i], 0.0, par*sizeof(float));
        memset(PP.sintering_flag[i], 0.0, par*sizeof(int));
        memset(PP.T_p[i], 0.0, par*sizeof(float));
-       memset(PP.delta_T_p[i], 0.0, par*sizeof(float));
+       memset(PP.T_temp[i], 0.0, par*sizeof(float));
+       memset(PP.E[i], 0.0, par*sizeof(float));
 
        for (int j = 0; j < par; ++j)
        {
