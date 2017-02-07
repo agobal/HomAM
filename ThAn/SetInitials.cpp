@@ -10,7 +10,7 @@ using namespace std;
 // Function for setting the initial location of powder particles inside the packing
 void PowBed::SetInitials(int grid, int par)
 {
-  num_grid_x = 1;
+  num_grid_x = 3;
   num_grid_y = 1;
   num_grid_z = 1;
 
@@ -114,9 +114,9 @@ void PowBed::SetInitials(int grid, int par)
         counter = counter + 1;
       }
     }
-/*    for (int ct = 0; ct < 4*ppcount; ++ct)
+/*    for (int ct = 0; ct < 4*par; ++ct)
       cout << neighbor_particles[ct] << " ";
-    cout << endl;*/   //Uncomment for testing particle locations
+    cout << endl;  */ //Uncomment for testing particle locations
 
     // Performing the relocation of particles to reach a stable position
     for (int k = 0; k < 600; ++k)
@@ -136,7 +136,6 @@ void PowBed::SetInitials(int grid, int par)
             {
               if ((PP.r_p[i] + PP.r_p[j]) > sqrt(pow(PP.x_p[c][i] - PP.x_p[c][j], 2.0) + pow(PP.y_p[c][i] - PP.y_p[c][j], 2.0) + pow(PP.z_p[c][i] - PP.z_p[c][j], 2.0)))
               {
-
                 q = q + 1;
                 x_particle_middle = x_particle_middle + PP.x_p[c][j] + (PP.x_p[c][i] - PP.x_p[c][j])*(PP.r_p[i] + PP.r_p[j])/sqrt(pow((PP.x_p[c][i] - PP.x_p[c][j]),2.0) + pow((PP.y_p[c][i] - PP.y_p[c][j]),2.0) + pow((PP.z_p[c][i] - PP.z_p[c][j]),2.0));
                 y_particle_middle = y_particle_middle + PP.y_p[c][j] + (PP.y_p[c][i] - PP.y_p[c][j])*(PP.r_p[i] + PP.r_p[j])/sqrt(pow((PP.x_p[c][i] - PP.x_p[c][j]),2.0) + pow((PP.y_p[c][i] - PP.y_p[c][j]),2.0) + pow((PP.z_p[c][i] - PP.z_p[c][j]),2.0));
@@ -145,22 +144,22 @@ void PowBed::SetInitials(int grid, int par)
             }
           }
           // For particles in the adjacent cells
-          else
+          if (j > par)
           {
             neighbor_cell = (neighbor_particles[j]/1000); // Because the total cell count starts from 0 and xyz count starts from 1
-            // if ((k == 0) && (i == 0) && (j == par))
-            //   cout << neighbor_cell << endl;
             if (neighbor_cell != 0)
-              neighbor_part = (neighbor_particles[j] % (neighbor_cell*1000));
-            // cout << neighbor_cell << " " << neighbor_part << endl;
+              neighbor_part = (neighbor_particles[j] % (1000));
             if ((neighbor_cell != 0) && (neighbor_part != 0))
             {
               if ((PP.r_p[i] + PP.r_p[neighbor_part]) > sqrt(pow(PP.x_p[c][i] - PP.x_p[neighbor_cell][neighbor_part], 2.0) + pow(PP.y_p[c][i] - PP.y_p[neighbor_cell][neighbor_part], 2.0) + pow(PP.z_p[c][i] - PP.z_p[neighbor_cell][neighbor_part], 2.0)))
               {
-                q = q + 1;
-                x_particle_middle = x_particle_middle + PP.x_p[neighbor_cell][neighbor_part] + (PP.x_p[c][i] - PP.x_p[neighbor_cell][neighbor_part])*(PP.r_p[i] + PP.r_p[neighbor_part])/sqrt(pow((PP.x_p[c][i] - PP.x_p[neighbor_cell][neighbor_part]),2.0) + pow((PP.y_p[c][i] - PP.y_p[neighbor_cell][neighbor_part]),2.0) + pow((PP.z_p[c][i] - PP.z_p[neighbor_cell][neighbor_part]),2.0));
-                y_particle_middle = y_particle_middle + PP.y_p[neighbor_cell][neighbor_part] + (PP.y_p[c][i] - PP.y_p[neighbor_cell][neighbor_part])*(PP.r_p[i] + PP.r_p[neighbor_part])/sqrt(pow((PP.x_p[c][i] - PP.x_p[neighbor_cell][neighbor_part]),2.0) + pow((PP.y_p[c][i] - PP.y_p[neighbor_cell][neighbor_part]),2.0) + pow((PP.z_p[c][i] - PP.z_p[neighbor_cell][neighbor_part]),2.0));
-                z_particle_middle = z_particle_middle + PP.z_p[neighbor_cell][neighbor_part] + (PP.z_p[c][i] - PP.z_p[neighbor_cell][neighbor_part])*(PP.r_p[i] + PP.r_p[neighbor_part])/sqrt(pow((PP.x_p[c][i] - PP.x_p[neighbor_cell][neighbor_part]),2.0) + pow((PP.y_p[c][i] - PP.y_p[neighbor_cell][neighbor_part]),2.0) + pow((PP.z_p[c][i] - PP.z_p[neighbor_cell][neighbor_part]),2.0));
+                if (sqrt(pow((PP.x_p[c][i] - PP.x_p[neighbor_cell][neighbor_part]),2.0) + pow((PP.y_p[c][i] - PP.y_p[neighbor_cell][neighbor_part]),2.0) + pow((PP.z_p[c][i] - PP.z_p[neighbor_cell][neighbor_part]),2.0)) != 0)
+                {
+                  q = q + 1;
+                  x_particle_middle = x_particle_middle + PP.x_p[neighbor_cell][neighbor_part] + (PP.x_p[c][i] - PP.x_p[neighbor_cell][neighbor_part])*(PP.r_p[i] + PP.r_p[neighbor_part])/sqrt(pow((PP.x_p[c][i] - PP.x_p[neighbor_cell][neighbor_part]),2.0) + pow((PP.y_p[c][i] - PP.y_p[neighbor_cell][neighbor_part]),2.0) + pow((PP.z_p[c][i] - PP.z_p[neighbor_cell][neighbor_part]),2.0));
+                  y_particle_middle = y_particle_middle + PP.y_p[neighbor_cell][neighbor_part] + (PP.y_p[c][i] - PP.y_p[neighbor_cell][neighbor_part])*(PP.r_p[i] + PP.r_p[neighbor_part])/sqrt(pow((PP.x_p[c][i] - PP.x_p[neighbor_cell][neighbor_part]),2.0) + pow((PP.y_p[c][i] - PP.y_p[neighbor_cell][neighbor_part]),2.0) + pow((PP.z_p[c][i] - PP.z_p[neighbor_cell][neighbor_part]),2.0));
+                  z_particle_middle = z_particle_middle + PP.z_p[neighbor_cell][neighbor_part] + (PP.z_p[c][i] - PP.z_p[neighbor_cell][neighbor_part])*(PP.r_p[i] + PP.r_p[neighbor_part])/sqrt(pow((PP.x_p[c][i] - PP.x_p[neighbor_cell][neighbor_part]),2.0) + pow((PP.y_p[c][i] - PP.y_p[neighbor_cell][neighbor_part]),2.0) + pow((PP.z_p[c][i] - PP.z_p[neighbor_cell][neighbor_part]),2.0));
+                }
               }
             }
           }
@@ -170,6 +169,7 @@ void PowBed::SetInitials(int grid, int par)
           PP.x_p[c][i] = x_particle_middle/q;
           PP.y_p[c][i] = y_particle_middle/q;
           PP.z_p[c][i] = z_particle_middle/q;
+        }
 
           // Particles can't go over the overall boundaries of the PB
           if ((cell_x_num[c] == num_grid_x) && (PP.x_p[c][i] >= (grid_x*cell_x_num[c] - PP.r_p[i])))
@@ -192,7 +192,6 @@ void PowBed::SetInitials(int grid, int par)
             PP.y_p[c][i] = PP.r_p[i];
           if ((cell_z_num[c] == 1) && (PP.z_p[c][i] <= (grid_z*(cell_z_num[c] - 1) + PP.r_p[i])))
             PP.z_p[c][i] = PP.r_p[i];
-        }
       }
     }
     // Find neighbors of particles
