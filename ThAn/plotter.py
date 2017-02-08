@@ -12,10 +12,17 @@ z_p = zfile.read()
 rfile = open("r.txt", "r")
 r_p = rfile.read()
 
+Tfile = open("T.txt", "r")
+T = Tfile.read()
+
 x_p = x_p.split(" ")
 y_p = y_p.split(" ")
 z_p = z_p.split(" ")
 r_p = r_p.split(" ")
+T = T.split(" ")
+
+Tmax = max(T)
+print(Tmax)
 
 rmaxidx = len(r_p) - 2
 ridx = -1
@@ -29,4 +36,6 @@ for idx, val in enumerate(x_p[0:-1]):
 		ridx = 0
 	rp = float(r_p[ridx])
 
-	sphere(pos=(xp, yp, zp), radius=rp, color=color.cyan)
+	op = float(T[idx])/float(Tmax)
+	sphere(pos=(xp, yp, zp), radius=rp, color=color.white)
+	sphere(pos=(xp, yp, zp), radius=rp, color=color.red, opacity = op)
