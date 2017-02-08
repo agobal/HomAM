@@ -16,6 +16,11 @@ void PowBed::print()
 	ofstream yfile("y.txt");
 	ofstream zfile("z.txt");
 	ofstream rfile("r.txt");
+
+	ofstream Tfile("T.txt");
+
+	ofstream Neighfile("Neighbors.txt");
+
 	for (int i = 0; i < PP.particle_count; ++i)
 	{
 		rfile << PP.r_p[i];
@@ -31,15 +36,31 @@ void PowBed::print()
 			yfile << " ";
 			zfile << PP.z_p[i][j];
 			zfile << " ";
+			Tfile << PP.T_p[i][j];
+			Tfile << " ";
 		}
-		xfile << "\n";
-		yfile << "\n";
-		zfile << "\n";
 	}
 	xfile.close();
 	yfile.close();
 	zfile.close();
 	rfile.close();
+
+	Tfile.close();
+
+	for (int i = 0; i < grid; ++i)
+	{
+		for (int j = 0; j < PP.particle_count; ++j)
+		{
+			for (int k = 0; k < 15; ++k)
+			{
+				Neighfile << PP.neighbors[i][j][k];
+				Neighfile << " ";
+			}
+			Neighfile << endl;
+		}
+		Neighfile << endl << endl;
+	}
+	Neighfile.close();
    // for (int u=0; u<PP.particle_count; u++)
    // {
    //   cout << PP.r_p[u] << " ";

@@ -11,5 +11,5 @@ using namespace std;
 void PowBed::LaserBeam(int cell, int particle, float speed, int i, float delta_t)
 {
 	float r_laser = 0.00005;
-	Laser_Intensity = ((2*W)/(4.0*atan(1)*r_laser*r_laser))*pow(2.7183, (-(2*(pow((PP.x_p[cell][particle] - i*delta_t*speed), 2) + pow((PP.y_p[cell][particle] - 0.15), 2)))/(pow(r_laser, 2))));
+	Laser_Intensity = ((2*W)/(4.0*atan(1)*r_laser*r_laser))*pow(2.7183, (-(2*(pow((PP.x_p[cell][particle] - i*delta_t*speed), 2) + pow((PP.y_p[cell][particle] - 0.00015), 2)))/(pow(r_laser, 2))));
 }
