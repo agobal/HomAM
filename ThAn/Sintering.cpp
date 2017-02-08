@@ -21,7 +21,7 @@ void PowBed::Sintering(float power, float speed)
   float solid_heat_capacity = 477;
 
   // Initial temperature of powder particles
-  for (int cell = 0; cell < grid; ++cell)
+  for (int cell = 1; cell <= grid; ++cell)
   {
     for (int particle = 0; particle < par; ++particle)
     {
@@ -33,7 +33,7 @@ void PowBed::Sintering(float power, float speed)
   // Go through the loop for performing the laser sintering (in the y direction)
   for (int i = 0; i < 2; ++i)
   {
-    for (int cell = 0; cell < grid; ++cell)
+    for (int cell = 1; cell <= grid; ++cell)
     {
       // Boundary condition
       if (cell == 6)
@@ -59,7 +59,7 @@ void PowBed::Sintering(float power, float speed)
               // CondCoeff(cell, particle, cell, neigh, dt);
               // Calculate the heat transfer between neighbors
               Q = Q + 100*(PP.T_p[cell][particle] - PP.T_p[cell][neigh]);
-              cout << cell << " " << particle << " " << PP.T_p[cell][particle] - PP.T_p[cell][neigh] << endl;
+              // cout << cell << " " << particle << " " << PP.T_p[cell][particle] - PP.T_p[cell][neigh] << endl;
             }
             else
             {
@@ -81,7 +81,7 @@ void PowBed::Sintering(float power, float speed)
       }
     }
     // Populating the temperature array
-    for (int cell = 0; cell < grid; ++cell)
+    for (int cell = 1; cell <= grid; ++cell)
     {
       for (int particle = 0; particle < par; ++particle)
       {

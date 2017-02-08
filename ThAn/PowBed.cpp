@@ -29,7 +29,7 @@ PowBed::PowBed(int grid, int par)
     PP.E = new float*[grid];
 
     // Create a row for every pointer
-    for (int i=0; i<grid; i++)
+    for (int i=1; i<=grid; i++)
     {
        // Note : Rows may not be contiguous
        PP.x_p[i] = new float[par];

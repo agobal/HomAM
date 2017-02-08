@@ -56,12 +56,17 @@ void PowBed::SetInitials(int grid, int par)
 
   int cell_x_num[grid], cell_y_num[grid], cell_z_num[grid]; // Number of the cell grid in x, y and z directions
 
-  for (int i = 0; i < grid; ++i)
+  for (int i = 1; i <= grid; ++i)
   {
     // Assigning cell grid numbering (starts from 1 unlike the total cell number which starts from 0)
-    cell_x_num[i] = (i % num_grid_x) + 1;
-    cell_y_num[i] = (i % (num_grid_x*num_grid_y))/num_grid_x + 1;
-    cell_z_num[i] = floor(i/(num_grid_x*num_grid_y) ) + 1;
+    cell_x_num[i] = (i % num_grid_x);
+    if (cell_x_num[i] == 0)
+      cell_x_num[i] = num_grid_x;
+    cell_y_num[i] = (i % (num_grid_y*num_grid_x));
+    if (cell_y_num[i] == 0)
+      cell_y_num[i] = num_grid_y*num_grid_x;
+    cell_y_num[i] = (cell_y_num[i] - 1)/num_grid_x + 1;
+    cell_z_num[i] = ((i - 1) / (num_grid_x*num_grid_y)) + 1;
 
     for (int j = 0; j < par; ++j)
     {
@@ -79,9 +84,9 @@ void PowBed::SetInitials(int grid, int par)
   int counter, neighbor_part, neighbor_cell;    // loop counter and variables for determining particle neighbors
 
   // Relocate particles to reduce overlaps
-  for (int c = 0; c < grid; ++c)  
+  for (int c = 1; c <= grid; ++c)  
   {
-    // cout << cell_x_num[c] << " " << cell_y_num[c] << " " << cell_z_num[c] << endl << endl;
+    cout << cell_x_num[c] << " " << cell_y_num[c] << " " << cell_z_num[c] << endl << endl;
     cout << c << endl;
     // Filling out the neighboring particle numbers for relocation purposes
     // Neighboring list consists of 4 cell groups for the cell itself plus neighbors in x, y, z directions behind it
@@ -241,7 +246,7 @@ void PowBed::SetInitials(int grid, int par)
     }
   }
 
-  for (int c = 0; c < grid; ++c)
+  for (int c = 1; c <= grid; ++c)
   {
     for (int particle = 0; particle < par; ++particle)
     {
@@ -257,7 +262,7 @@ void PowBed::SetInitials(int grid, int par)
             if (PP.neighbors[cc][pp][k] == 0)
             {
               PP.neighbors[cc][pp][k] = c*1000 + particle;
-              continue;
+              break;
             }
           }
         }

@@ -26,7 +26,7 @@ void PowBed::print()
 		rfile << PP.r_p[i];
 		rfile << " ";
 	}
-	for (int i = 0; i < PP.grid_count; ++i)
+	for (int i = 1; i <= PP.grid_count; ++i)
 	{
 		for (int j = 0; j < PP.particle_count; ++j)
 		{
@@ -47,7 +47,7 @@ void PowBed::print()
 
 	Tfile.close();
 
-	for (int i = 0; i < grid; ++i)
+	for (int i = 1; i <= grid; ++i)
 	{
 		for (int j = 0; j < PP.particle_count; ++j)
 		{

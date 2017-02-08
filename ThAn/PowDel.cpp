@@ -10,7 +10,7 @@ using namespace std;
 // Function for clearing up the heap memory after dealing with the problem
 void PowBed::PowDel()
 {
-   for (int i=0; i<PP.grid_count; i++)
+   for (int i=1; i<=PP.grid_count; i++)
     {
       delete[] PP.x_p[i];
       delete[] PP.y_p[i];
