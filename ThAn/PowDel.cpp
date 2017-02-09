@@ -28,4 +28,5 @@ void PowBed::PowDel()
    delete[] PP.T_temp;
    delete[] PP.E;
    delete[] PP.sintering_flag;
+   delete[] PP.cell_sinter_flag;
  }

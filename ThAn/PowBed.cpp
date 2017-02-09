@@ -28,6 +28,9 @@ PowBed::PowBed(int grid, int par)
     PP.T_temp = new float*[grid];
     PP.E = new float*[grid];
 
+    PP.cell_sinter_flag = new int[grid]; // For fast computation (adaptive)
+    PP.max_temp = new float[grid];
+
     // Create a row for every pointer
     for (int i=1; i<=grid; i++)
     {

@@ -35,6 +35,8 @@ public:
         float **T_p;            // Particle temperature
         float **T_temp;      // delta particle temperature (over time)
         float **E;          // Internal energy of powder particles
+        int *cell_sinter_flag; // For fast computations
+        float *max_temp;
     };
     ParProps PP;
 

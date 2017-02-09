@@ -59,6 +59,8 @@ void PowBed::SetInitials(int grid, int par)
 
   for (int i = 1; i <= grid; ++i)
   {
+    PP.cell_sinter_flag[i] = 0;
+    PP.max_temp[i] = 0;
     // Assigning cell grid numbering (starts from 1 unlike the total cell number which starts from 0)
     cell_x_num[i] = (i % num_grid_x);
     if (cell_x_num[i] == 0)
