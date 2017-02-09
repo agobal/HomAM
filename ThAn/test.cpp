@@ -9,14 +9,14 @@ int main()
     // Create a graph given in the above diagram
     // PowBed::ParProps PP;
     int par = 100;
-    int grid = 8;
+    int grid = 64;
     PowBed g(grid, par);
 
 
     g.SetInitials(grid, par);
 
-    float power = 10; // Laser power (watts)
-    float speed = 0.01; // Laser beam speed (m/s)
+    float power = 50; // Laser power (watts)
+    float speed = 1.5; // Laser beam speed (m/s)
     g.Sintering(power, speed);
 
     g.print();

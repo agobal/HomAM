@@ -18,7 +18,7 @@ void PowBed::Sintering(float power, float speed)
 
   float rho = 7800;
   float K_ab = 0.3;
-  float solid_heat_capacity = 477;
+  float solid_heat_capacity = 600;
 
   // Initial temperature of powder particles
   for (int cell = 1; cell <= grid; ++cell)
@@ -31,19 +31,19 @@ void PowBed::Sintering(float power, float speed)
   }
 
   // Go through the loop for performing the laser sintering (in the y direction)
-  for (int i = 0; i < 10000; ++i)
+  for (int i = 0; i < 1000; ++i)
   {
     for (int cell = 1; cell <= grid; ++cell)
     {
       // Boundary condition
-      if (cell == 1)
-      {
-        for (int p = 0; p < par; ++p)
-        {
-          PP.T_p[cell][p] = 100;
-          PP.E[cell][p] = PP.T_p[cell][p]*(rho*(4.0/3.0)*4.0*atan(1)*pow(PP.r_p[p], 3))*solid_heat_capacity;
-        }
-      }
+      // if (cell == 1)
+      // {
+      //   for (int p = 0; p < par; ++p)
+      //   {
+      //     PP.T_p[cell][p] = 100;
+      //     PP.E[cell][p] = PP.T_p[cell][p]*(rho*(4.0/3.0)*4.0*atan(1)*pow(PP.r_p[p], 3))*solid_heat_capacity;
+      //   }
+      // }
       for (int particle = 0; particle < par; ++particle)
       {
         Q = 0;
@@ -73,11 +73,32 @@ void PowBed::Sintering(float power, float speed)
           }
         }
         // Heat input from the laser beam
-        // LaserBeam(cell, particle, speed, i, dt);
+        LaserBeam(cell, particle, speed, i, dt);
         // + K_ab*S*Laser_Intensity*dt
         float S = 4.0*atan(1)*PP.r_p[particle]*PP.r_p[particle];    // Particle surface absorbing the laser powder
-        PP.E[cell][particle] = PP.E[cell][particle] + (Q*dt); //particle energy increase by laser
+        PP.E[cell][particle] = PP.E[cell][particle] + ((Q + K_ab*S*Laser_Intensity)*dt); //particle energy increase by laser
+        // if ((cell == 5) && (i == 50))
+        //   cout << particle << " " << 20/(3.14*0.00005*0.00005) << " " << Laser_Intensity << endl;
+        // Temperature and melting calculations:
         PP.T_p[cell][particle] = PP.E[cell][particle]/(solid_heat_capacity*rho*(4.0/3.0)*4.0*atan(1)*pow(PP.r_p[particle], 3)); // Particle temperature change
+        if (PP.T_p[cell][particle] > 1700)
+        {
+          PP.E[cell][particle] = PP.E[cell][particle] - 299000*rho*(4.0/3.0)*4.0*atan(1)*pow(PP.r_p[particle], 3);
+          PP.T_temp[cell][particle] = PP.E[cell][particle]/(solid_heat_capacity*rho*(4.0/3.0)*4.0*atan(1)*pow(PP.r_p[particle], 3));
+          if (PP.T_temp[cell][particle] <= 1700)
+            PP.T_p[cell][particle] = 1700;
+          else
+          {
+            PP.E[cell][particle] = PP.E[cell][particle] - 609000*rho*(4.0/3.0)*4.0*atan(1)*pow(PP.r_p[particle], 3);
+            PP.T_temp[cell][particle] = PP.E[cell][particle]/(solid_heat_capacity*rho*(4.0/3.0)*4.0*atan(1)*pow(PP.r_p[particle], 3));
+            if (PP.T_temp[cell][particle] <= 3200)
+              PP.T_p[cell][particle] = 3200;
+            else
+              PP.T_p[cell][particle] = PP.T_temp[cell][particle];
+          }
+
+        }
+        // cout << cell << " " << particle << " " << Q << " " << K_ab*S*Laser_Intensity << " " << (Q + K_ab*S*Laser_Intensity)*dt/(solid_heat_capacity*rho*(4.0/3.0)*4.0*atan(1)*pow(PP.r_p[particle], 3)) << endl;
         // if ((cell == 6) && (particle == 10))
         //   cout << Q << " " << PP.E[cell][particle] << " " << PP.T_p[cell][particle] << " " << (solid_heat_capacity*rho*(4.0/3.0)*4.0*atan(1)*pow(PP.r_p[particle], 3)) << endl;
       }

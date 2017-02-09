@@ -20,13 +20,13 @@ void PowBed::SetInitials(int grid, int par)
   int cc;
   int pp;
 
-  num_grid_x = 2;
-  num_grid_y = 2;
-  num_grid_z = 2;
+  num_grid_x = 8;
+  num_grid_y = 8;
+  num_grid_z = 1;
 
 
-  PP.avgrd = 0.00002;
-  PP.stddev = 0.000005;
+  PP.avgrd = 0.000025;
+  PP.stddev = 0.000000;
 
   /* First create the size distribution using the boost library */
   boost::mt19937 rng;
@@ -52,6 +52,7 @@ void PowBed::SetInitials(int grid, int par)
   grid_x = pow(volume, 0.3333333333);
   grid_y = grid_x;
   grid_z = grid_y;
+
   /* Randomly putting particles inside the powder bed */
 
   int cell_x_num[grid], cell_y_num[grid], cell_z_num[grid]; // Number of the cell grid in x, y and z directions

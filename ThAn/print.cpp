@@ -39,6 +39,10 @@ void PowBed::print()
 			Tfile << PP.T_p[i][j];
 			Tfile << " ";
 		}
+		xfile << "\n";
+		yfile << "\n";
+		zfile << "\n";
+		Tfile << "\n";
 	}
 	xfile.close();
 	yfile.close();
