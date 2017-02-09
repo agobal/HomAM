@@ -39,11 +39,11 @@ void PowBed::CondCoeff(int cell1, int par1, int cell2, int par2, float delta_t)
 	// Mechanical properties
 	// if (PP.sintering_flag[cell1][par1] == 0)
 	// {
-		r_c = pow(((3.0/16.0)*r_eq*F/E_prime) , 0.33); // Contact area radius between two circles
-		P = F/(4.0*atan(1)*pow(r_c, 2)); // Compression pressure
-		A_a = 4*atan(1)*pow(r_c, 2); // Total contact area
-		A_r = A_a*(P*1.41)/(E_prime*m); // Contact point area
-		A_v = A_a - A_r; // Void contact area
+	// 	r_c = pow(((3.0/16.0)*r_eq*F/E_prime) , 0.33); // Contact area radius between two circles
+	// 	P = F/(4.0*atan(1)*pow(r_c, 2)); // Compression pressure
+	// 	A_a = 4*atan(1)*pow(r_c, 2); // Total contact area
+	// 	A_r = A_a*(P*1.41)/(E_prime*m); // Contact point area
+	// 	A_v = A_a - A_r; // Void contact area
 
 	// 	cc_dist = r1*cos(asin(r_c/r1)) + r2*cos(asin(r_c/r2));	// Distance of center to center particles
 	// 	// Move particle 2 to distance
@@ -80,18 +80,16 @@ void PowBed::CondCoeff(int cell1, int par1, int cell2, int par2, float delta_t)
 	// float F_n = (4.0*atan(1)*pow(r_c, 4))/(8*D_b)*v_n - 4.0*atan(1)*gamma_s*(4*r_eq*(1 - cos(psi/2)) + r_c*sin(psi/2));
 	float r_c_dot = -r_eq*v_n/r_c; // temporal change in r_c
 
+	r_c = pow(((3.0/16.0)*r_eq*F/E_prime) , 0.33);
 	// r_c = r_c + r_c_dot*delta_t;
 	A_a = 4*atan(1)*pow(r_c, 2); // Total contact area
 	A_r = A_a; // Contact point area
 	A_v = A_a - A_r; // Void contact area
 	cc_dist = r1*cos(asin(r_c/r1)) + r2*cos(asin(r_c/r2));
 
-	// cout << r_c << endl;
-	// cout << A_v << endl;
-	// cout << cc_dist << endl;
-	// PP.x_p[cell2][par2] = x2 + (r1 + r2 - cc_dist)/(r1 + r2)*(x1 - x2);
-	// PP.y_p[cell2][par2] = y2 + (r1 + r2 - cc_dist)/(r1 + r2)*(y1 - y2);
-	// PP.z_p[cell2][par2] = z2 + (r1 + r2 - cc_dist)/(r1 + r2)*(z1 - z2);
+	PP.x_p[cell2][par2] = x2 + (r1 + r2 - cc_dist)/(r1 + r2)*(x1 - x2);
+	PP.y_p[cell2][par2] = y2 + (r1 + r2 - cc_dist)/(r1 + r2)*(y1 - y2);
+	PP.z_p[cell2][par2] = z2 + (r1 + r2 - cc_dist)/(r1 + r2)*(z1 - z2);
 
 	float h_e = (1.55*m*k/sigma)*pow((P*1.41)/(E_prime*m) , 0.94);
 	float h_c = h_e + (A_v/(A_a*sigma))*k_air;
