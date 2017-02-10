@@ -28,10 +28,10 @@ void PowBed::SetInitials(int grid, int par, int par_l)
   num_grid_z = 1;
 
 
-  PP.avgrd = 0.000025;
+  PP.avgrd = 0.000015;
   PP.stddev = 0.000000;
 
-  PPl.avgrd = 0.00005;
+  PPl.avgrd = 0.00003;
   PPl.stddev = 0.0;
 
   /* First create the size distribution using the boost library */
@@ -114,7 +114,7 @@ void PowBed::SetInitials(int grid, int par, int par_l)
   // Relocate particles to reduce overlaps
   for (int c = 1; c <= grid; ++c)  
   {
-    cout << cell_x_num[c] << " " << cell_y_num[c] << " " << cell_z_num[c] << endl << endl;
+    // cout << cell_x_num[c] << " " << cell_y_num[c] << " " << cell_z_num[c] << endl << endl;
     cout << c << endl;
     // Filling out the neighboring particle numbers for relocation purposes
     // Neighboring list consists of 4 cell groups for the cell itself plus neighbors in x, y, z directions behind it
@@ -483,4 +483,5 @@ void PowBed::SetInitials(int grid, int par, int par_l)
       }
     }
   }
+  cout << grid_z*num_grid_z << endl;
 }

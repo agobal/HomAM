@@ -1,18 +1,18 @@
 from visual import *
 
-xfile = open("Xl.txt", "r")
+xfile = open("x.txt", "r")
 x_p = xfile.read()
 
-yfile = open("Yl.txt", "r")
+yfile = open("y.txt", "r")
 y_p = yfile.read()
 
-zfile = open("Zl.txt", "r")
+zfile = open("z.txt", "r")
 z_p = zfile.read()
 
-rfile = open("Rl.txt", "r")
+rfile = open("r.txt", "r")
 r_p = rfile.read()
 
-Tfile = open("Tl.txt", "r")
+Tfile = open("T.txt", "r")
 T = Tfile.read()
 
 x_p = x_p.split(" ")
@@ -28,7 +28,7 @@ for idx, val in enumerate(T):
 		val = 0
 	T[idx] = val
 
-Tmax = max(T)
+Tmax = 1700
 print(max(T))
 
 rmaxidx = len(r_p) - 2
@@ -45,6 +45,8 @@ for idx, val in enumerate(x_p[0:-1]):
 
 	try:
 		op = float(T[idx])/float(Tmax)
+		# if (op > 1):
+		# 	print (op)
 	except ValueError:
 		op = 0
 	sphere(pos=(xp, yp, zp), radius=rp, color=color.white)
