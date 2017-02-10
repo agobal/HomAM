@@ -12,14 +12,14 @@ using namespace std;
 // Utility method to print adjacency matrix
 void PowBed::print()
 {
-	ofstream xfile("x.txt");
-	ofstream yfile("y.txt");
-	ofstream zfile("z.txt");
-	ofstream rfile("r.txt");
+	ofstream xfile("./Results/x.txt");
+	ofstream yfile("./Results/y.txt");
+	ofstream zfile("./Results/z.txt");
+	ofstream rfile("./Results/r.txt");
 
-	ofstream Tfile("T.txt");
+	ofstream Tfile("./Results/T.txt");
 
-	ofstream Neighfile("Neighbors.txt");
+	ofstream Neighfile("./Results/Neighbors.txt");
 
 	for (int i = 0; i < PP.particle_count; ++i)
 	{
@@ -67,14 +67,14 @@ void PowBed::print()
 	Neighfile.close();
 
 // Save location of the large particle
-	ofstream Xfile("Xl.txt");
-	ofstream Yfile("Yl.txt");
-	ofstream Zfile("Zl.txt");
-	ofstream Rfile("Rl.txt");
+	ofstream Xfile("./Results/Xl.txt");
+	ofstream Yfile("./Results/Yl.txt");
+	ofstream Zfile("./Results/Zl.txt");
+	ofstream Rfile("./Results/Rl.txt");
 
-	ofstream Tlfile("Tl.txt");
+	ofstream Tlfile("./Results/Tl.txt");
 
-	ofstream Neighfilel("Neighborsl.txt");
+	ofstream Neighfilel("./Results/Neighborsl.txt");
 
 	for (int i = 0; i < PPl.particle_count; ++i)
 	{
