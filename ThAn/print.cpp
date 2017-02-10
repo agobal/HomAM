@@ -65,8 +65,59 @@ void PowBed::print()
 		Neighfile << endl << endl;
 	}
 	Neighfile.close();
-   // for (int u=0; u<PP.particle_count; u++)
-   // {
-   //   cout << PP.r_p[u] << " ";
-   // }
+
+// Save location of the large particle
+	ofstream Xfile("Xl.txt");
+	ofstream Yfile("Yl.txt");
+	ofstream Zfile("Zl.txt");
+	ofstream Rfile("Rl.txt");
+
+	ofstream Tlfile("Tl.txt");
+
+	ofstream Neighfilel("Neighborsl.txt");
+
+	for (int i = 0; i < PPl.particle_count; ++i)
+	{
+		Rfile << PPl.r_p[i];
+		Rfile << " ";
+	}
+	for (int i = 1; i <= PPl.grid_count; ++i)
+	{
+		for (int j = 0; j < PPl.particle_count; ++j)
+		{
+			Xfile << PPl.x_p[i][j];
+			Xfile << " ";
+			Yfile << PPl.y_p[i][j];
+			Yfile << " ";
+			Zfile << PPl.z_p[i][j];
+			Zfile << " ";
+			Tlfile << PPl.T_p[i][j];
+			Tlfile << " ";
+		}
+		Xfile << "\n";
+		Yfile << "\n";
+		Zfile << "\n";
+		Tlfile << "\n";
+	}
+	Xfile.close();
+	Yfile.close();
+	Zfile.close();
+	Rfile.close();
+
+	Tfile.close();
+
+	for (int i = 1; i <= grid; ++i)
+	{
+		for (int j = 0; j < PPl.particle_count; ++j)
+		{
+			for (int k = 0; k < 15; ++k)
+			{
+				Neighfilel << PPl.neighbors[i][j][k];
+				Neighfilel << " ";
+			}
+			Neighfilel << endl;
+		}
+		Neighfilel << endl << endl;
+	}
+	Neighfilel.close();
 }

@@ -27,6 +27,11 @@ void PowBed::Sintering(float power, float speed)
     {
       PP.T_p[cell][particle] = 10;
       PP.E[cell][particle] = PP.T_p[cell][particle]*(rho*(4.0/3.0)*4.0*atan(1)*pow(PP.r_p[particle], 3))*solid_heat_capacity;
+      if (particle < par_l)
+      {
+        PPl.T_p[cell][particle] = PP.T_p[cell][PPl.sintering_flag[cell][particle]];
+        PPl.E[cell][particle] = 15*PPl.T_p[cell][particle]*(rho*(4.0/3.0)*4.0*atan(1)*pow(PP.r_p[particle], 3))*solid_heat_capacity;
+      }
     }
   }
 
@@ -130,8 +135,51 @@ void PowBed::Sintering(float power, float speed)
           //   cout << Q << " " << PP.E[cell][particle] << " " << PP.T_p[cell][particle] << " " << (solid_heat_capacity*rho*(4.0/3.0)*4.0*atan(1)*pow(PP.r_p[particle], 3)) << endl;
           if (PP.T_p[cell][particle] > PP.max_temp[cell])
             PP.max_temp[cell] = PP.T_p[cell][particle];
+
+          // Assign temperatures to the larger particles
+          if (particle < par_l)
+          {
+            PPl.T_p[cell][particle] = PP.T_p[cell][PPl.sintering_flag[cell][particle]];
+            PPl.E[cell][particle] = 15*PPl.T_p[cell][particle]*(rho*(4.0/3.0)*4.0*atan(1)*pow(PP.r_p[particle], 3))*solid_heat_capacity;
+          }
         }
       }
+      else
+      {
+        for (int particle = 0; particle < par_l; ++particle)
+        {
+          Q = 0;
+          // First step in to calculate heat transfer to and from neighbors from and to the designated particle
+          for (int j = 0; j < 15; ++j)
+          {
+            if (PPl.neighbors[cell][particle][j] != 0)
+            {
+              if (PPl.neighbors[cell][particle][j] < 1000)
+              {
+                neigh = PPl.neighbors[cell][particle][j];
+                // function to calculate the conduction coefficient between powder particles
+                // CondCoeff(cell, particle, cell, neigh, dt);
+                // Calculate the heat transfer between neighbors
+                Q = Q - 10*K_F*(PPl.T_p[cell][particle] - PPl.T_p[cell][neigh]);
+                // if ((cell == 6) && (particle == 10))
+                //   cout << K_F << " " << cell << " " << particle << " " << neigh << " " << PP.T_p[cell][particle] << " " << PP.T_p[cell][neigh] << " " << Q << " " << PP.E[cell][particle] << " " << endl;
+              }
+              else
+              {
+                int cell2 = (PPl.neighbors[cell][particle][j]/1000);
+                if (cell2 != 0)
+                  neigh = (PPl.neighbors[cell][particle][j] % (cell2*1000));
+                // CondCoeff(cell, particle, cell2, neigh, dt);
+                Q = Q - 10*K_F*(PPl.T_p[cell][particle] - PPl.T_p[cell2][neigh]);
+              }
+            }
+          }
+          // Heat input from the laser beam
+          PPl.E[cell][particle] = PPl.E[cell][particle] + ((Q)*dt); //particle energy increase by laser
+          PPl.T_p[cell][particle] = PPl.E[cell][particle]/(0.5*solid_heat_capacity*rho*(4.0/3.0)*4.0*atan(1)*pow(PPl.r_p[particle], 3)); // Particle temperature change
+        }
+      }
+
     }
     // Populating the temperature array
     // for (int cell = 1; cell <= grid; ++cell)

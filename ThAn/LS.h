@@ -5,6 +5,7 @@ public:
     // Bulk properties of the powder bed
     int grid;
     int par;
+    int par_l;
     int num_grid_x;
     int num_grid_y;
     int num_grid_z;
@@ -39,11 +40,12 @@ public:
         float *max_temp;
     };
     ParProps PP;
+    ParProps PPl;
 
-    PowBed(int grid, int par);   // Constructor
+    PowBed(int grid, int par, int par_l);   // Constructor
 
     // function to set initial location of powder particles
-    void SetInitials(int grid, int par);
+    void SetInitials(int grid, int par, int par_l);
 
     // Function for carrying out the heat transfer simulation
     void Sintering(float powder, float speed);

@@ -10,10 +10,12 @@ int main()
     // PowBed::ParProps PP;
     int par = 100;
     int grid = 64;
-    PowBed g(grid, par);
+    int par_l = 15;
+
+    PowBed g(grid, par, par_l);
 
 
-    g.SetInitials(grid, par);
+    g.SetInitials(grid, par, par_l);
 
     float power = 50; // Laser power (watts)
     float speed = 1.5; // Laser beam speed (m/s)

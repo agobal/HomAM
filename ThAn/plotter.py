@@ -1,18 +1,18 @@
 from visual import *
 
-xfile = open("x.txt", "r")
+xfile = open("Xl.txt", "r")
 x_p = xfile.read()
 
-yfile = open("y.txt", "r")
+yfile = open("Yl.txt", "r")
 y_p = yfile.read()
 
-zfile = open("z.txt", "r")
+zfile = open("Zl.txt", "r")
 z_p = zfile.read()
 
-rfile = open("r.txt", "r")
+rfile = open("Rl.txt", "r")
 r_p = rfile.read()
 
-Tfile = open("T.txt", "r")
+Tfile = open("Tl.txt", "r")
 T = Tfile.read()
 
 x_p = x_p.split(" ")

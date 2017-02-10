@@ -19,6 +19,13 @@ void PowBed::PowDel()
       delete[] PP.T_temp[i];
       delete[] PP.E[i];
       delete[] PP.sintering_flag[i];
+
+      //LArge particles
+      delete[] PPl.x_p[i];
+      delete[] PPl.y_p[i];
+      delete[] PPl.z_p[i];
+      delete[] PPl.T_p[i];
+      delete[] PPl.E[i];
     }
    delete[] PP.x_p;
    delete[] PP.y_p;
@@ -29,4 +36,12 @@ void PowBed::PowDel()
    delete[] PP.E;
    delete[] PP.sintering_flag;
    delete[] PP.cell_sinter_flag;
+
+   // Large particles
+   delete[] PPl.x_p;
+   delete[] PPl.y_p;
+   delete[] PPl.z_p;
+   delete[] PPl.r_p;
+   delete[] PPl.T_p;
+   delete[] PPl.E;
  }
