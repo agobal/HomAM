@@ -16,9 +16,9 @@ void PowBed::Sintering(float power, float speed)
   float Q; // Total heat delivered to each particle at each point in time
   int neigh; // intermediate variable for neighbor value
 
-  float rho = 7800;
+  float rho = 2900;
   float K_ab = 0.3;
-  float solid_heat_capacity = 600;
+  float solid_heat_capacity = 190;
 
   // Initial temperature of powder particles
   for (int cell = 1; cell <= grid; ++cell)

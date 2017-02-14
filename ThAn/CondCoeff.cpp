@@ -20,8 +20,8 @@ void PowBed::CondCoeff(int cell1, int par1, int cell2, int par2, float delta_t)
 	float y2 = PP.y_p[cell2][par2];
 	float z1 = PP.z_p[cell1][par1];
 	float z2 = PP.z_p[cell2][par2];
-	float k1 = 40; // Thermal conductivity of particle 1
-	float k2 = 40; // Thermal conductivity of particle 2
+	float k1 = 22; // Thermal conductivity of particle 1
+	float k2 = 22; // Thermal conductivity of particle 2
 	float k_air = 0.02; // Thermal conductivity of air
 	float alpha1 = 1;
 	float alpha2 = 1;
@@ -65,7 +65,7 @@ void PowBed::CondCoeff(int cell1, int par1, int cell2, int par2, float delta_t)
 	// }
 
 	// Material properties or whatever (used for sintering calculations)
-	float rho = 7800; // Material density
+	float rho = 2900; // Material density
 	float k_n = 700000; // Contact stiffness (mechanical)
 	float epsilon = 0.7; // Damping coefficient
 	float miu = 0.05; // Friction coefficient

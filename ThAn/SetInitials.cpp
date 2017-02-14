@@ -25,13 +25,13 @@ void PowBed::SetInitials(int grid, int par, int par_l)
 
   num_grid_x = 8;
   num_grid_y = 8;
-  num_grid_z = 1;
+  num_grid_z = 2;
 
 
-  PP.avgrd = 0.000015;
+  PP.avgrd = 0.0000315;
   PP.stddev = 0.000000;
 
-  PPl.avgrd = 0.00003;
+  PPl.avgrd = 0.00006;
   PPl.stddev = 0.0;
 
   /* First create the size distribution using the boost library */
