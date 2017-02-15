@@ -16,16 +16,16 @@ void PowBed::Sintering(float power, float speed)
   float Q; // Total heat delivered to each particle at each point in time
   int neigh; // intermediate variable for neighbor value
 
-  float rho = 2900;
+  float rho = 7800;
   float K_ab = 0.3;
-  float solid_heat_capacity = 190;
+  float solid_heat_capacity = 500;
 
   // Initial temperature of powder particles
   for (int cell = 1; cell <= grid; ++cell)
   {
     for (int particle = 0; particle < par; ++particle)
     {
-      PP.T_p[cell][particle] = 10;
+      PP.T_p[cell][particle] = 373;
       PP.E[cell][particle] = PP.T_p[cell][particle]*(rho*(4.0/3.0)*4.0*atan(1)*pow(PP.r_p[particle], 3))*solid_heat_capacity;
       if (particle < par_l)
       {
@@ -57,13 +57,13 @@ void PowBed::Sintering(float power, float speed)
       zc = (cell_z_num[cell]*grid_z + (cell_z_num[cell] - 1)*grid_z)/2;
       dc = sqrt(pow(xc - i*dt*speed, 2) + pow(yc - 0.0005, 2));
       
-      if ((PP.cell_sinter_flag[cell] == 0) && (dc < 0.00012))
+      // if ((PP.cell_sinter_flag[cell] == 0) && (dc < 0.00012))
         PP.cell_sinter_flag[cell] = 1;
-      else
-        {
-          if ((PP.cell_sinter_flag[cell] == 1) && (PP.max_temp[cell] < 100))
-            PP.cell_sinter_flag[cell] = 0;
-        }
+      // else
+      //   {
+      //     if ((PP.cell_sinter_flag[cell] == 1) && (PP.max_temp[cell] < 100))
+      //       PP.cell_sinter_flag[cell] = 0;
+      //   }
 
       // Boundary condition
       // if (cell == 1)

@@ -20,15 +20,15 @@ void PowBed::CondCoeff(int cell1, int par1, int cell2, int par2, float delta_t)
 	float y2 = PP.y_p[cell2][par2];
 	float z1 = PP.z_p[cell1][par1];
 	float z2 = PP.z_p[cell2][par2];
-	float k1 = 22; // Thermal conductivity of particle 1
-	float k2 = 22; // Thermal conductivity of particle 2
+	float k1 = 40; // Thermal conductivity of particle 1
+	float k2 = 40; // Thermal conductivity of particle 2
 	float k_air = 0.02; // Thermal conductivity of air
 	float alpha1 = 1;
 	float alpha2 = 1;
 	float k = (2*k1*k2)/(k1 + k2); // Average thermal conductivity of the two surfaces;
 	float F = 0.01; // The contact force between the two particles
-	float E = 207000000000.0; // Young's modulus of the material
-	float nu = 0.33; // Poisson's ratio of the material
+	float E = 193000000000.0; // Young's modulus of the material
+	float nu = 0.26; // Poisson's ratio of the material
 	float E_prime = E/(1 - pow(nu, 2));
 	float r_eq = (2*r1*r2)/(r1 + r2);
 	float m = 0.1; // Average slope of surface roughness
@@ -87,11 +87,14 @@ void PowBed::CondCoeff(int cell1, int par1, int cell2, int par2, float delta_t)
 	A_v = A_a - A_r; // Void contact area
 	cc_dist = r1*cos(asin(r_c/r1)) + r2*cos(asin(r_c/r2));
 
-	PP.x_p[cell2][par2] = x2 + (r1 + r2 - cc_dist)/(r1 + r2)*(x1 - x2);
-	PP.y_p[cell2][par2] = y2 + (r1 + r2 - cc_dist)/(r1 + r2)*(y1 - y2);
-	PP.z_p[cell2][par2] = z2 + (r1 + r2 - cc_dist)/(r1 + r2)*(z1 - z2);
+	// PP.x_p[cell2][par2] = x2 + (r1 + r2 - cc_dist)/(r1 + r2)*(x1 - x2);
+	// PP.y_p[cell2][par2] = y2 + (r1 + r2 - cc_dist)/(r1 + r2)*(y1 - y2);
+	// PP.z_p[cell2][par2] = z2 + (r1 + r2 - cc_dist)/(r1 + r2)*(z1 - z2);
 
 	float h_e = (1.55*m*k/sigma)*pow((P*1.41)/(E_prime*m) , 0.94);
 	float h_c = h_e + (A_v/(A_a*sigma))*k_air;
 	K_F = h_c*A_a; // Overall heat transfer (in room temperature)
+	// K_F = 0.01;
+	if (PP.T_p[cell1][par1] > 500)
+		K_F = K_F*100;
 }

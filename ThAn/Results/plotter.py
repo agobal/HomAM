@@ -35,6 +35,7 @@ rmaxidx = len(r_p) - 2
 ridx = -1
 
 for idx, val in enumerate(x_p[0:-1]):
+	# if idx<100:
 	xp = float(x_p[idx])
 	yp = float(y_p[idx])
 	zp = float(z_p[idx])
@@ -45,8 +46,8 @@ for idx, val in enumerate(x_p[0:-1]):
 
 	try:
 		op = float(T[idx])/float(Tmax)
-		# if (op > 1):
-		# 	print (op)
+		if (op > 1):
+			print (op)
 	except ValueError:
 		op = 0
 	sphere(pos=(xp, yp, zp), radius=rp, color=color.white)

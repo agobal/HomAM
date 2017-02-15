@@ -23,13 +23,13 @@ void PowBed::SetInitials(int grid, int par, int par_l)
   int cc_l;
   int pp_l;
 
-  num_grid_x = 8;
-  num_grid_y = 8;
-  num_grid_z = 2;
+  num_grid_x = 10;
+  num_grid_y = 2;
+  num_grid_z = 1;
 
 
-  PP.avgrd = 0.0000315;
-  PP.stddev = 0.000000;
+  PP.avgrd = 0.0000225;
+  PP.stddev = 0.0000;
 
   PPl.avgrd = 0.00006;
   PPl.stddev = 0.0;
@@ -53,7 +53,7 @@ void PowBed::SetInitials(int grid, int par, int par_l)
     // If the volume is cell than the maximum packing volume, add more
     PP.r_p[i] = r;
   }
-  volume = volume/0.64;
+  volume = volume/0.57;
   // Small grid sizes are determined as:
   grid_x = pow(volume, 0.3333333333);
   grid_y = grid_x;
@@ -244,11 +244,11 @@ void PowBed::SetInitials(int grid, int par, int par_l)
 
           // Particles can't go over the overall boundaries of the PB
           if ((cell_x_num[c] == num_grid_x) && (PP.x_p[c][i] >= (grid_x*cell_x_num[c] - PP.r_p[i])))
-            PP.x_p[c][i] = (grid_x - PP.r_p[i]);
+            PP.x_p[c][i] = (grid_x*cell_x_num[c] - PP.r_p[i]);
           if ((cell_y_num[c] == num_grid_y) && (PP.y_p[c][i] >= (grid_y*cell_y_num[c] - PP.r_p[i])))
-            PP.y_p[c][i] = (grid_y - PP.r_p[i]);
+            PP.y_p[c][i] = (grid_y*cell_y_num[c] - PP.r_p[i]);
           if ((cell_z_num[c] == num_grid_z) && (PP.z_p[c][i] >= (grid_z*cell_z_num[c] - PP.r_p[i])))
-           PP.z_p[c][i] = (grid_z - PP.r_p[i]);
+           PP.z_p[c][i] = (grid_z*cell_z_num[c] - PP.r_p[i]);
           // Particles can't go below a certain amount of the previous cell
           if (PP.x_p[c][i] <= (0.9*grid_x*(cell_x_num[c] - 1.0) + PP.r_p[i]))
             PP.x_p[c][i] = (0.9*grid_x*(cell_x_num[c] - 1.0) + PP.r_p[i]);
@@ -277,7 +277,7 @@ void PowBed::SetInitials(int grid, int par, int par_l)
         {
           if (j != i)
           {
-            if (fabs(PP.r_p[i] + PP.r_p[j] - pow(pow(PP.x_p[c][i] - PP.x_p[c][j], 2.0) + pow(PP.y_p[c][i] - PP.y_p[c][j], 2.0) + pow(PP.z_p[c][i] - PP.z_p[c][j], 2.0), 0.5)) < 0.000005)
+            if (fabs(PP.r_p[i] + PP.r_p[j] - pow(pow(PP.x_p[c][i] - PP.x_p[c][j], 2.0) + pow(PP.y_p[c][i] - PP.y_p[c][j], 2.0) + pow(PP.z_p[c][i] - PP.z_p[c][j], 2.0), 0.5)) < 0.0000005)
             {
               PP.neighbors[c][i][q2] = j;
               q2 = q2 + 1;
