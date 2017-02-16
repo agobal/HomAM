@@ -95,11 +95,5 @@ void PowBed::CondCoeff(int cell1, int par1, int cell2, int par2, float delta_t)
 	float h_c = h_e + (A_v/(A_a*sigma))*k_air;
 	K_F = h_c*A_a; // Overall heat transfer (in room temperature)
 	K_F = 2*k1*A_a;
-	if (PP.T_p[cell1][par1] > 850)
-		K_F = K_F + 0.0005*((1700 - PP.T_p[cell1][par1])/1700);
 
-	if (K_F > PP.K_F[cell1][par1])
-		PP.K_F[cell1][par1] = K_F;
-	else
-		K_F = PP.K_F[cell1][par1];
 }

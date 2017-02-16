@@ -54,9 +54,6 @@ public:
     // Function for calculating the heat transfer coefficient between powders and their location change
     void CondCoeff(int cell1, int par1, int cell2, int par2, float delta_t);
 
-    // Calculating the laser beam intensity
-    void LaserBeam(int cell, int particle, float speed, int i, float delta_t);
-
     // Function to print results onto the screen
     void print();
     // Function to clear the heap memory after the program's done

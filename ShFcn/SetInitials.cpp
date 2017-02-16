@@ -23,15 +23,15 @@ void PowBed::SetInitials(int grid, int par, int par_l)
   int cc_l;
   int pp_l;
 
-  num_grid_x = 20;
-  num_grid_y = 4;
+  num_grid_x = 1;
+  num_grid_y = 1;
   num_grid_z = 1;
 
 
-  PP.avgrd = 0.0000125;
+  PP.avgrd = 0.0000225;
   PP.stddev = 0.0000;
 
-  PPl.avgrd = 0.00006;
+  PPl.avgrd = 0.00007;
   PPl.stddev = 0.0;
 
   /* First create the size distribution using the boost library */
@@ -481,7 +481,9 @@ void PowBed::SetInitials(int grid, int par, int par_l)
           PPl.sintering_flag[cell][particle] = parti;
         }
       }
+      // cout << PPl.sintering_flag[cell][particle] << " ";
     }
+    // cout << endl;
   }
   cout << grid_z*num_grid_z << endl;
 }

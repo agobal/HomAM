@@ -38,7 +38,7 @@ void PowBed::Sintering(float power, float speed)
   float xc, yc, zc, dc;
   int cell_x_num[grid], cell_y_num[grid], cell_z_num[grid]; // Number of the cell grid in x, y and z directions
   // Go through the loop for performing the laser sintering (in the y direction)
-  for (int i = 0; i < 1000; ++i)
+  for (int i = 100; i < 800; ++i)
   {
     for (int cell = 1; cell <= grid; ++cell)
     {

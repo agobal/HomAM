@@ -8,9 +8,9 @@ int main()
 {
     // Create a graph given in the above diagram
     // PowBed::ParProps PP;
-    int par = 100;
-    int grid = 80;
-    int par_l = 15;
+    int par = 500;
+    int grid = 1;
+    int par_l = 16;
 
     PowBed g(grid, par, par_l);
 
