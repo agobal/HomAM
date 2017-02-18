@@ -23,8 +23,8 @@ void PowBed::SetInitials(int grid, int par, int par_l)
   int cc_l;
   int pp_l;
 
-  num_grid_x = 20;
-  num_grid_y = 4;
+  num_grid_x = 8;
+  num_grid_y = 8;
   num_grid_z = 1;
 
 

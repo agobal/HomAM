@@ -10,6 +10,8 @@ using namespace std;
 // Function for setting the initial location of powder particles inside the packing
 void PowBed::Sintering(float power, float speed)
 {
+
+
   W = power;
   dt = (grid_x*num_grid_x/speed)/1000.0;
   cout << dt << endl;
@@ -38,7 +40,7 @@ void PowBed::Sintering(float power, float speed)
   float xc, yc, zc, dc;
   int cell_x_num[grid], cell_y_num[grid], cell_z_num[grid]; // Number of the cell grid in x, y and z directions
   // Go through the loop for performing the laser sintering (in the y direction)
-  for (int i = 100; i < 800; ++i)
+  for (int i = 0; i < 10000; ++i)
   {
     for (int cell = 1; cell <= grid; ++cell)
     {
@@ -55,13 +57,23 @@ void PowBed::Sintering(float power, float speed)
       xc = (cell_x_num[cell]*grid_x + (cell_x_num[cell] - 1)*grid_x)/2;
       yc = (cell_y_num[cell]*grid_y + (cell_y_num[cell] - 1)*grid_y)/2;
       zc = (cell_z_num[cell]*grid_z + (cell_z_num[cell] - 1)*grid_z)/2;
-      dc = sqrt(pow(xc - i*dt*speed, 2) + pow(yc - 0.0005, 2));
+
+      float bb;
+      bb = 1;
+      int ii;
+      if (i > 1000)
+      {
+        ii = i % 1000;
+        int bbb = i / 1000;
+        bb = float(bbb);
+      }
+      dc = sqrt(pow(xc - ii*dt*speed, 2) + pow(yc - bb*0.0001, 2));
       
-      // if ((PP.cell_sinter_flag[cell] == 0) && (dc < 0.00012))
+      // if ((PP.cell_sinter_flag[cell] == 0) && (dc < 0.00015))
         PP.cell_sinter_flag[cell] = 1;
       // else
       //   {
-      //     if ((PP.cell_sinter_flag[cell] == 1) && (PP.max_temp[cell] < 100))
+      //     if ((PP.cell_sinter_flag[cell] == 1) && (PP.max_temp[cell] < 700))
       //       PP.cell_sinter_flag[cell] = 0;
       //   }
 
@@ -190,4 +202,6 @@ void PowBed::Sintering(float power, float speed)
     //   }
     // }
   }
+
+
 }

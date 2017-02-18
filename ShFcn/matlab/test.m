@@ -8,46 +8,36 @@ stddev = 0;
 
 [xb, yb, rb, n, neighbors] = TwoDPackGen(xb_container, yb_container, aveg, stddev, rden);
 
-for i = 1:n
-    x = xb(i);
-    y = yb(i);
-    r = rb(i);
-    ang = 0:0.01:2*pi;
-    xp = r*cos(ang);
-    yp = r*sin(ang);
-    plot(x+xp,y+yp);
-    hold on
-end
+% for i = 1:n
+%     x = xb(i);
+%     y = yb(i);
+%     r = rb(i);
+%     ang = 0:0.01:2*pi;
+%     xp = r*cos(ang);
+%     yp = r*sin(ang);
+%     plot(x+xp,y+yp,'r');
+%     hold on
+% end
 
-time_points = 100000;
+time_points = 10000;
 dt = 0.01;
 
 T = zeros(n, time_points);
 k = 1;
 
 %Boundary conditions
-% for i = 1:n
-%     if xb(i) < 10
-%         T(i, :) = 1;
-%     end
-%     if xb(i) > 90
-%         T(i, :) = 0;
-%     end
-% end
-min_dist = 100;
 for i = 1:n
-    if (sqrt((xb(i, 1) - 100)^2 + (yb(i, 1) - 100)^2) < min_dist)
-    xf = i;
+    if xb(i) < 20
+        T(i, :) = 1;
+    end
+    if xb(i) > 180
+        T(i, :) = 0;
     end
 end
 
 %Solving the heat transfer problem
 for t = 1:(time_points - 1)
-    T(xf, t) = 1;
     for i = 1:n
-        if (sqrt((xb(i, 1) - xb(xf, 1))^2 + (yb(i, 1) - yb(xf, 1))^2) > 20)
-            T(i, t) = 0;
-        end
         Q = 0;
         for j = 1:10
             if neighbors(i, j) ~= 0
@@ -55,21 +45,15 @@ for t = 1:(time_points - 1)
             end
         end
         T(i, t + 1) = T(i, t) + Q*dt;
-%         if xb(i) < 10
-%             T(i, :) = 1;
-%         end
-%         if xb(i) > 90
-%             T(i, :) = 0;
-%         end
-        T(xf, t + 1) = 1;
+        if xb(i) < 20
+            T(i, :) = 1;
+        end
+        if xb(i) > 180
+            T(i, :) = 0;
+        end
     end
 end
-
-for i = 1:n
-    distance(i, 1) = sqrt((xb(i, 1) - xb(xf, 1))^2 + (yb(i, 1) - yb(xf, 1))^2);
-end
-
-plot(distance(:, 1), T(:, 99999), 'o');
+plot(xb(:, 1), T(:, 9999), 'o');
 %fit data to temperatures with respect to distance from the point of
 %temperature and find out a formula then apply it to find the temperature
 %of points from the neighboring points. the multipliers here must follow

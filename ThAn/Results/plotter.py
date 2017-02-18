@@ -28,14 +28,14 @@ for idx, val in enumerate(T):
 		val = 0
 	T[idx] = val
 
-Tmax = 1700
+Tmax = max(T)
 print(max(T))
 
 rmaxidx = len(r_p) - 2
 ridx = -1
 
 
-display(width=800, height=200, center=(0.0012,0.0002,0), background=(1,1,1))
+display(width=800, height=800, center=(0.0005,0.0005,0), background=(1,1,1))
 
 for idx, val in enumerate(x_p[0:-1]):
 	# if idx<100:
@@ -56,9 +56,9 @@ for idx, val in enumerate(x_p[0:-1]):
 	except ValueError:
 		op = 0
 	sphere(pos=(xp, yp, zp), radius=rp, color=color.white)
-	if op < 0.25:
+	if op < 0.5:
 		sphere(pos=(xp, yp, zp), radius=rp, color=color.cyan, opacity = op)
-	elif op < 0.5:
+	elif op < 0.65:
 		sphere(pos=(xp, yp, zp), radius=rp, color=color.green, opacity = op)
 	elif op < 0.75:
 		sphere(pos=(xp, yp, zp), radius=rp, color=color.yellow, opacity = op)
