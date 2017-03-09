@@ -37,13 +37,14 @@ int main()
     	}
         grid_count++;
     }
+
     cout << "Number of grids:" << grid_count << "\t" << "Number of particles:" << particle_count << "\n";
 
-    cout<<"time: " << ( std::clock() - start ) / (double)(CLOCKS_PER_SEC/1000) << "ms" << endl;
+    cout << "Size of powder bed determined!" << "\t" << "time: " << ( std::clock() - start ) / (double)(CLOCKS_PER_SEC/1000) << "ms" << endl;
 
 	// Constructor for the PowderBed class
 	PowderBed pb(grid_count, particle_count);
 
-	cout<<"time: " << ( std::clock() - start ) / (double)(CLOCKS_PER_SEC/1000) << "ms" << endl;
+	cout << "Required arrays constructed!" << "\t" << "time: " << ( std::clock() - start ) / (double)(CLOCKS_PER_SEC/1000) << "ms" << endl;
     return 0;
 }

@@ -46,7 +46,7 @@ PowderBed::PowderBed(int grid_count, int particle_count)
     memset(PP.r_p, 0.0, particle_count*sizeof(float));
 
 
-    int par_dof = 3; // DoF for each particle (x, y, z)
+    int par_dof = 6; // DoF for each particle (x, y, z)
     int tot_dof = grid_count*particle_count*par_dof;	// Total displacement and force dof
 
     PP.u = new float [tot_dof];
@@ -67,6 +67,4 @@ PowderBed::PowderBed(int grid_count, int particle_count)
        memset(PP.K[i], 0.0, tot_dof*sizeof(float));
        memset(PP.M[i], 0.0, tot_dof*sizeof(float));
     }
-
-
-    }
+}
