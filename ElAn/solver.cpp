@@ -46,5 +46,9 @@ int main()
 	PowderBed pb(grid_count, particle_count);
 
 	cout << "Required arrays constructed!" << "\t" << "time: " << ( std::clock() - start ) / (double)(CLOCKS_PER_SEC/1000) << "ms" << endl;
+
+	// Next we need to read the x, y, z, r and neighbor values into the dynamic arrays
+	pb.GenerateBed(grid_count, particle_count);
+
     return 0;
 }

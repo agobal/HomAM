@@ -28,4 +28,6 @@ public:
     PowProps PP;
 
     PowderBed(int grid_count, int particle_count);   // Constructor
+
+    void GenerateBed(int grid_count, int particle_count);
 };
