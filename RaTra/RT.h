@@ -26,10 +26,12 @@ public:
         int num_rays;
         float *ray_power;
         float **intersection_point;
-    }
+    };
     LaserRays LR;
 
     PowderBed(int grid_count, int particle_count);   // Constructor
 
     void GenerateBed(int grid_count, int particle_count);
+
+    void RayTracing();
 };

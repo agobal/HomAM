@@ -1,5 +1,5 @@
 #include<bits/stdc++.h>
-#include "TrussDEM.h"
+#include "RT.h"
 
 using namespace std;
  
@@ -23,7 +23,7 @@ PowderBed::PowderBed(int grid_count, int particle_count)
     PP.z_p = new float*[grid_count];
     PP.neighbors = new int**[grid_count];
 
-    LR.intersection_points = new float*[grid_count];
+    LR.intersection_point = new float*[grid_count];
 
 
     // Create a row for every pointer
@@ -35,7 +35,7 @@ PowderBed::PowderBed(int grid_count, int particle_count)
        PP.z_p[i] = new float[particle_count];
        PP.neighbors[i] = new int*[particle_count];
 
-       LR.intersection_points[i] = new float[particle_count];
+       LR.intersection_point[i] = new float[particle_count];
 
        // Initialize all locations are zero
        memset(PP.x_p[i], 0.0, particle_count*sizeof(float));
@@ -52,27 +52,4 @@ PowderBed::PowderBed(int grid_count, int particle_count)
     // Create the 1D arrays for radii, displacement, force
     PP.r_p = new float [particle_count];
     memset(PP.r_p, 0.0, particle_count*sizeof(float));
-
-
-    int par_dof = 6; // DoF for each particle (x, y, z)
-    int tot_dof = grid_count*particle_count*par_dof;	// Total displacement and force dof
-
-    PP.u = new float [tot_dof];
-    memset(PP.u, 0.0, tot_dof*sizeof(float));
-
-    PP.f = new float [tot_dof];
-    memset(PP.f, 0.0, tot_dof*sizeof(float));
-
-    PP.K = new float*[tot_dof];
-    PP.M = new float*[tot_dof];
-    for (int i = 1; i <= tot_dof; i++)
-    {
-       // Note : Rows may not be contiguous
-       PP.K[i] = new float[tot_dof];
-       PP.M[i] = new float[tot_dof];
-
-       // Initialize all locations are zero
-       memset(PP.K[i], 0.0, tot_dof*sizeof(float));
-       memset(PP.M[i], 0.0, tot_dof*sizeof(float));
-    }
 }

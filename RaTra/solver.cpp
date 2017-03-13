@@ -1,5 +1,5 @@
 #include<bits/stdc++.h>
-#include "TrussDEM.h"
+#include "RT.h"
 #include <ctime>
 #include <fstream>
 #include <iostream>
@@ -47,6 +47,9 @@ int main()
 
 	// Next we need to read the x, y, z, r and neighbor values into the dynamic arrays
 	pb.GenerateBed(grid_count, particle_count);
+
+	// Perform the ray tracing analysis
+	pb.RayTracing();
 
     return 0;
 }

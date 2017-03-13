@@ -1,7 +1,7 @@
 #include<bits/stdc++.h>
 #include <iostream>
 #include <fstream>
-#include "TrussDEM.h"
+#include "RT.h"
 
 using namespace std;
 
