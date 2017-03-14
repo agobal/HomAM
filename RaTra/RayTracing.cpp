@@ -48,10 +48,10 @@ void PowderBed::RayTracing()
 	float cosss;
 	float lennnn;
 	float poww;
-	for (int q = 1; q < 100; ++q)
+	for (int q = 1; q < 10000; ++q)
 	{
-		x_l = ((double) rand() / (RAND_MAX))*(x_bed);
-		y_l = ((double) rand() / (RAND_MAX))*(y_bed);
+		x_l = ((double) rand() / (RAND_MAX))*(0.5*x_bed) + 0.25*x_bed;
+		y_l = ((double) rand() / (RAND_MAX))*(0.5*y_bed) + 0.25*y_bed;
 		z_l = z_bed*2.0;
 		theta_l = 2.0*atan(1); // Angle with positive direction of x
 		phi_l = 2.0*atan(1); // Angle with positive direction of y;
@@ -80,7 +80,7 @@ void PowderBed::RayTracing()
 						if (i == prev_grid)
 							continue;
 						else
-							cout << 1;
+							1;
 					}
 					else
 					{
