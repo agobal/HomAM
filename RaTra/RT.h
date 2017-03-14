@@ -16,7 +16,6 @@ public:
         float **x_p;
         float **y_p;
         float **z_p;
-        int ***neighbors;
         float *r_p;
     };
     PowProps PP;
@@ -34,4 +33,6 @@ public:
     void GenerateBed(int grid_count, int particle_count);
 
     void RayTracing();
+
+    void Dele();
 };

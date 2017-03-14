@@ -12,7 +12,7 @@ void SizeFinder(int grid_count, int particle_count)
     string line;
  
     /* Creating input filestream */ 
-    ifstream file("../ThAn/Results/x.txt");
+    ifstream file("./x.txt");
     while (getline(file, line))
     {
     	if (grid_count == 0)

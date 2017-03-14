@@ -21,7 +21,6 @@ PowderBed::PowderBed(int grid_count, int particle_count)
     PP.x_p = new float*[grid_count];
     PP.y_p = new float*[grid_count];
     PP.z_p = new float*[grid_count];
-    PP.neighbors = new int**[grid_count];
 
     LR.intersection_point = new float*[grid_count];
 
@@ -33,7 +32,6 @@ PowderBed::PowderBed(int grid_count, int particle_count)
        PP.x_p[i] = new float[particle_count];
        PP.y_p[i] = new float[particle_count];
        PP.z_p[i] = new float[particle_count];
-       PP.neighbors[i] = new int*[particle_count];
 
        LR.intersection_point[i] = new float[particle_count];
 
@@ -42,11 +40,6 @@ PowderBed::PowderBed(int grid_count, int particle_count)
        memset(PP.y_p[i], 0.0, particle_count*sizeof(float));
        memset(PP.z_p[i], 0.0, particle_count*sizeof(float));
 
-       for (int j = 0; j < particle_count; ++j)
-       {
-          PP.neighbors[i][j] = new int[15];
-          memset(PP.neighbors[i][j], 0.0, 15*sizeof(int));
-        }
     }
 
     // Create the 1D arrays for radii, displacement, force
