@@ -3,7 +3,7 @@ tic
 %n = 150;%44643
 phi = rden;
 V_particles = 0;
-for i = 1:2000
+for i = 1:20000
 %     rb(i, 1) = (0.000005*rand + 0.0000075);
     rb(i, 1) = (stddev*rand + aveg);
     V_particles = V_particles + (4/3)*pi*(rb(i,1)^3);
