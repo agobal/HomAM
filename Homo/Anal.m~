@@ -3,9 +3,9 @@ clc
 
 % Defining the geometry of the container
 
-x_container = 20;
-y_container = 20;
-z_container = 20;
+x_container = 2;
+y_container = 2;
+z_container = 3;
 
 % Defining radii of the discrete elements and an initial guess of their
 % count
@@ -88,7 +88,7 @@ end
 
 for i = 1:length(force_nodes)
     j = 6*(force_nodes(i) - 1) + 2;
-    F(j, 1) = -2/length(force_nodes);
+    F(j, 1) = -0.1/length(force_nodes);
 end
 
 % Choosing the bottom layer as the fixed nodes
@@ -114,7 +114,7 @@ for i = 1:element_count
     hold on
 end
 
-hold on
+figure
 for i = 1:element_count
     l1 = linspace(x(element(i, 1)) + u(6*(element(i, 1) - 1) + 1), x(element(i, 2)) + u(6*(element(i, 2) - 1) + 1), 100);
     l2 = linspace(y(element(i, 1)) + u(6*(element(i, 1) - 1) + 2), y(element(i, 2)) + u(6*(element(i, 2) - 1) + 2), 100);

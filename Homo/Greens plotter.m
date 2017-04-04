@@ -66,22 +66,7 @@ CBIG = [c(1, 1, 1, 1) c(1, 1, 2, 2) c(1, 1, 3, 3) c(1, 1, 1, 2) c(1, 1, 1, 3) c(
     c(1, 3, 1, 1) c(1, 3, 2, 2) c(1, 3, 3, 3) c(1, 3, 1, 2) c(1, 3, 1, 3) c(1, 3, 2, 3);
     c(2, 3, 1, 1) c(2, 3, 2, 2) c(2, 3, 3, 3) c(2, 3, 1, 2) c(2, 3, 1, 3) c(2, 3, 2, 3)];
 
-CZERO = [c0(1, 1, 1, 1) c0(1, 1, 2, 2) c0(1, 1, 3, 3) c0(1, 1, 1, 2) c0(1, 1, 1, 3) c0(1, 1, 2, 3);
-    c0(2, 2, 1, 1) c0(2, 2, 2, 2) c0(2, 2, 3, 3) c0(2, 2, 1, 2) c0(2, 2, 1, 3) c0(2, 2, 2, 3);
-    c0(3, 3, 1, 1) c0(3, 3, 2, 2) c0(3, 3, 3, 3) c0(3, 3, 1, 2) c0(3, 3, 1, 3) c0(3, 3, 2, 3);
-    c0(1, 2, 1, 1) c0(1, 2, 2, 2) c0(1, 2, 3, 3) c0(1, 2, 1, 2) c0(1, 2, 1, 3) c0(1, 2, 2, 3);
-    c0(1, 3, 1, 1) c0(1, 3, 2, 2) c0(1, 3, 3, 3) c0(1, 3, 1, 2) c0(1, 3, 1, 3) c0(1, 3, 2, 3);
-    c0(2, 3, 1, 1) c0(2, 3, 2, 2) c0(2, 3, 3, 3) c0(2, 3, 1, 2) c0(2, 3, 1, 3) c0(2, 3, 2, 3)];
 
-Comp = zeros(6*N, 6*N);
-Comp0 = zeros(6*N, 6*N);
-
-A = [1 1 0 1 1 0 0 0 0 1 1 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0;
-     0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 0 0 0 0 0 0 0 0 0 0 0 0;
-     0 0 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 0 0 0 0 0 0 0 0 0 0;
-     0 0 0 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 0 0 0 0 0 0 0 0 0;
-     0 0 0 0 0 0 0 0 0 1 1 0 1 1 0 0 0 0 1 1 0 1 1 0 0 0 0;
-     
 % For all the query points inside the structure
 N = 27;
 X = [1 1 1; 2 1 1; 3 1 1; 1 2 1; 2 2 1; 3 2 1; 1 3 1; 2 3 1; 3 3 1;
@@ -95,13 +80,20 @@ X = [1 1 1; 2 1 1; 3 1 1; 1 2 1; 2 2 1; 3 2 1; 1 3 1; 2 3 1; 3 3 1;
  
  B = zeros(6*N, 6*N);
  DC = zeros(6*N, 6*N);
- for I = 1:N
-     for J = 1:N
-         if (I ~= J)
-             x1 = X(I, :); % Location at which we want G
-             x2 = X(J, :);
-             x = x1 - x2;
-             
+ 
+ X = linspace(-10,10,51);
+ Y = linspace(-10,10,51);
+ nx = length(X);
+ ny = length(Y);
+%  for I = 1:N
+%      for J = 1:N
+%          if (I ~= J)
+             for pp = 1:nx
+                 for qq = 1:ny
+%              x1 = X(I, :); % Location at which we want G
+%              x2 = X(J, :);
+%              x = x1 - x2;
+             x = [X(pp) Y(qq) 1];
              v1 = (cross(x, [1 1 1]));
              if v1 == 0
                  v1 = (cross(x,[0 1 0]));
@@ -132,8 +124,6 @@ X = [1 1 1; 2 1 1; 3 1 1; 1 2 1; 2 2 1; 3 2 1; 1 3 1; 2 3 1; 3 3 1;
                  
                  G_theta = zzinv + G_theta;
              end
-             
-             G = G_theta/8/pi^2/norm(x)*dtheta;
              
              Gamma_theta = zeros(3, 3, 3, 3);
              for mm = 1:nint
@@ -202,84 +192,14 @@ X = [1 1 1; 2 1 1; 3 1 1; 1 2 1; 2 2 1; 3 2 1; 1 3 1; 2 3 1; 3 3 1;
              end
              
              
-             Gamma = Gamma_theta/8/pi^2/norm(x)*dtheta;
+             Gamma(pp, qq) = Gamma_theta(3, 3, 3, 3)/8/pi^2/norm(x)*dtheta;
              
-             GAM = [Gamma(1, 1, 1, 1) Gamma(1, 1, 2, 2) Gamma(1, 1, 3, 3) Gamma(1, 1, 1, 2) Gamma(1, 1, 1, 3) Gamma(1, 1, 2, 3);
-                 Gamma(2, 2, 1, 1) Gamma(2, 2, 2, 2) Gamma(2, 2, 3, 3) Gamma(2, 2, 1, 2) Gamma(2, 2, 1, 3) Gamma(2, 2, 2, 3);
-                 Gamma(3, 3, 1, 1) Gamma(3, 3, 2, 2) Gamma(3, 3, 3, 3) Gamma(3, 3, 1, 2) Gamma(3, 3, 1, 3) Gamma(3, 3, 2, 3);
-                 Gamma(1, 2, 1, 1) Gamma(1, 2, 2, 2) Gamma(1, 2, 3, 3) Gamma(1, 2, 1, 2) Gamma(1, 2, 1, 3) Gamma(1, 2, 2, 3);
-                 Gamma(1, 3, 1, 1) Gamma(1, 3, 2, 2) Gamma(1, 3, 3, 3) Gamma(1, 3, 1, 2) Gamma(1, 1, 1, 3) Gamma(1, 3, 2, 3);
-                 Gamma(2, 3, 1, 1) Gamma(2, 3, 2, 2) Gamma(2, 3, 3, 3) Gamma(2, 3, 1, 2) Gamma(2, 3, 1, 3) Gamma(2, 3, 2, 3)];
+             G(pp, qq) = G_theta(3, 3)/8/pi^2/norm(x)*dtheta;
              
-             B(6*(I - 1) + 1:6*I, 6*(J - 1) + 1:6*J) = GAM;
-         elseif (I == J)
-             B(6*(I - 1) + 1:6*I, 6*(J - 1) + 1:6*J) = DELTAC;
-         end
-         Comp0(6*(I - 1) + 1:6*I, 6*(J - 1) + 1:6*J) = Comp0(6*(I - 1) + 1:6*I, 6*(J - 1) + 1:6*J) + CZERO;
-         Comp(6*(I - 1) + 1:6*I, 6*(J - 1) + 1:6*J) = Comp(6*(I - 1) + 1:6*I, 6*(J - 1) + 1:6*J) + CBIG;
-         DC(6*(I - 1) + 1:6*I, 6*(J - 1) + 1:6*J) = DELTAC;
-     end
- end
- 
- ep1 = zeros(6*N, 1);
- ep2 = zeros(6*N, 1);
- ep3 = zeros(6*N, 1);
- ep4 = zeros(6*N, 1);
- ep5 = zeros(6*N, 1);
- ep6 = zeros(6*N, 1);
- f1 = zeros(6*N, 1);
- f2 = zeros(6*N, 1);
- f3 = zeros(6*N, 1);
- f4 = zeros(6*N, 1);
- f5 = zeros(6*N, 1);
- f6 = zeros(6*N, 1);
- f1(1, 1) = 1;
- f2(2, 1) = 1;
- f3(3, 1) = 1;
- f4(4, 1) = 1;
- f5(5, 1) = 1;
- f6(6, 1) = 1;
- fixed1 = [157];
- free1 = [1:6*N];
- free1(fixed1) = [];
- ep1(free1) = Comp0(free1, free1)\f1(free1);
-%  for i = 1:N
-%      ep1(6*(i - 1) + 1, 1) = 1;
-%      ep2(6*(i - 1) + 2, 1) = 1;
-%      ep3(6*(i - 1) + 3, 1) = 1;
-%      ep4(6*(i - 1) + 4, 1) = 1;
-%      ep5(6*(i - 1) + 5, 1) = 1;
-%      ep6(6*(i - 1) + 6, 1) = 1;
-%  end
- temp = B*DC;
- eps1 = pinv(temp)*ep1;
-%  eps2 = pinv(temp)*ep2;
-%  eps3 = pinv(temp)*ep3;
-%  eps4 = pinv(temp)*ep4;
-%  eps5 = pinv(temp)*ep5;
-%  eps6 = pinv(temp)*ep6;
- sigma1 = Comp*eps1;
-%  sigma2 = Comp*eps2;
-%  sigma3 = Comp*eps3;
-%  sigma4 = Comp*eps4;
-%  sigma5 = Comp*eps5;
-%  sigma6 = Comp*eps6;
- 
-epep = zeros(6, 6);
-sigsig = zeros(6, 6);
-for i = 1:6
-    for j = 1:N
-        epep(i, 1) = epep(i, 1) + eps1(j*(i - 1) + 1)/N;
-        sigsig(i, 1) = sigsig(i, 1) + sigma1(j*(i - 1) + 1)/N;
-%         epep(i, 2) = epep(i, 2) + eps2(j*(i - 1) + 1)/N;
-%         sigsig(i, 2) = sigsig(i, 2) + sigma2(j*(i - 1) + 1)/N;
-%         epep(i, 3) = epep(i, 3) + eps3(j*(i - 1) + 1)/N;
-%         sigsig(i, 3) = sigsig(i, 3) + sigma3(j*(i - 1) + 1)/N;
-%         epep(i, 4) = epep(i, 4) + eps4(j*(i - 1) + 1)/N;
-%         sigsig(i, 4) = sigsig(i, 4) + sigma4(j*(i - 1) + 1)/N;
-%         epep(i, 5) = epep(i, 5) + eps5(j*(i - 1) + 1)/N;
-%         sigsig(i, 5) = sigsig(i, 5) + sigma5(j*(i - 1) + 1)/N;
-%         epep(i, 6) = epep(i, 6) + eps6(j*(i - 1) + 1)/N;
-%         sigsig(i, 6) = sigsig(i, 6) + sigma6(j*(i - 1) + 1)/N;
-    end
-end
+                 end
+             end
+             figure;
+             mesh(Y, X, Gamma);
+             
+             figure;
+             mesh(Y, X, G);
