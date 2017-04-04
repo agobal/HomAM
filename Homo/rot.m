@@ -1,5 +1,5 @@
 function [kp2] = rot(kp, i, element, l, x, y, z, r, kp11, kp12, kp21, kp22);
-
+% function [x1 y1 z1 x2 y2 z2 Ry Rz] = rot(kp, i, element, l, x, y, z, r, kp11, kp12, kp21, kp22);
 x1 = x(element(i, 1), 1);
 y1 = y(element(i, 1), 1);
 z1 = z(element(i, 1), 1);
@@ -10,11 +10,14 @@ y2 = y(element(i, 2), 1);
 z2 = z(element(i, 2), 1);
 r2 = r(element(i, 2), 1);
 
-len = l(i, 1);
+len = sqrt((x2 - x1)^2 + (z2 - z1)^2 + (y2 - y1)^2);
 
-theta_z = sqrt((x2 - x1)^2 + (z2 - z1)^2)/l(i, 1);
+theta_z = sqrt((x2 - x1)^2 + (z2 - z1)^2)/sqrt((x2 - x1)^2 + (z2 - z1)^2 + (y2 - y1)^2);
 
 theta_y = (x2 - x1)/sqrt((x2 - x1)^2 + (z2 - z1)^2);
+if sqrt((x2 - x1)^2 + (z2 - z1)^2) < 0.0001
+    theta_y = 1;
+end
 
 theta_z = acos(theta_z);
 theta_y = acos(theta_y);

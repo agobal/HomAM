@@ -30,7 +30,7 @@ for i = 1:n
     zb(i, 1) = rand*(zb_container - 2*rb(i, 1)) + rb(i, 1);
 end
 %Relocation
-for k = 1:600
+for k = 1:2000
 for i = 1:n
     q = 0;
     xn = 0;
@@ -105,6 +105,7 @@ for i = 2:n
 end
 
 [X,Y,Z] = sphere(25);
+figure;
 for i=1:n
     surf(X*rb(i)+xb(i),Y*rb(i)+yb(i),Z*rb(i)+zb(i));
     hold on
