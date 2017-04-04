@@ -286,3 +286,4 @@ ee = [eps1 eps2 eps3 eps4 eps5 eps6];
 ss = [sigma1 sigma2 sigma3 sigma4 sigma5 sigma6];
 
 cfinal = ss*pinv(ee);
+%Done
