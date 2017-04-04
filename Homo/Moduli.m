@@ -25,7 +25,7 @@ c(1, 2, 2, 1) = C44; c(2, 1, 1, 2) = C44; c(1, 3, 3, 1) = C44;
 c(3, 1, 1, 3) = C44; c(2, 3, 3, 2) = C44; c(3, 2, 2, 3) = C44;
 
 c2 = zeros(3, 3, 3, 3);
-Ex = 0.7406
+Ex = 0.7406;
 nunu = 0.1;
 matmat = [1/Ex -nunu/Ex -nunu/Ex 0 0 0;
     -nunu/Ex 1/Ex -nunu/Ex 0 0 0;
@@ -73,8 +73,7 @@ CZERO = [c0(1, 1, 1, 1) c0(1, 1, 2, 2) c0(1, 1, 3, 3) c0(1, 1, 1, 2) c0(1, 1, 1,
     c0(1, 3, 1, 1) c0(1, 3, 2, 2) c0(1, 3, 3, 3) c0(1, 3, 1, 2) c0(1, 3, 1, 3) c0(1, 3, 2, 3);
     c0(2, 3, 1, 1) c0(2, 3, 2, 2) c0(2, 3, 3, 3) c0(2, 3, 1, 2) c0(2, 3, 1, 3) c0(2, 3, 2, 3)];
 
-Comp = zeros(6*N, 6*N);
-Comp0 = zeros(6*N, 6*N);
+
 
 % For all the query points inside the structure
 N = 27;
@@ -86,6 +85,9 @@ X = [1 1 1; 2 1 1; 3 1 1; 1 2 1; 2 2 1; 3 2 1; 1 3 1; 2 3 1; 3 3 1;
          X(j, i) = (X(j, i) - 1)*10 + 5;
      end
  end
+
+ Comp = zeros(6*N, 6*N);
+ Comp0 = zeros(6*N, 6*N);
  
  B = zeros(6*N, 6*N);
  DC = zeros(6*N, 6*N);
@@ -207,7 +209,7 @@ X = [1 1 1; 2 1 1; 3 1 1; 1 2 1; 2 2 1; 3 2 1; 1 3 1; 2 3 1; 3 3 1;
              
              B(6*(I - 1) + 1:6*I, 6*(J - 1) + 1:6*J) = GAM;
          elseif (I == J)
-             B(6*(I - 1) + 1:6*I, 6*(J - 1) + 1:6*J) = DELTAC;
+             B(6*(I - 1) + 1:6*I, 6*(J - 1) + 1:6*J) = inv(DELTAC);
          end
          Comp0(6*(I - 1) + 1:6*I, 6*(J - 1) + 1:6*J) = Comp0(6*(I - 1) + 1:6*I, 6*(J - 1) + 1:6*J) + CZERO;
          Comp(6*(I - 1) + 1:6*I, 6*(J - 1) + 1:6*J) = Comp(6*(I - 1) + 1:6*I, 6*(J - 1) + 1:6*J) + CBIG;
@@ -229,36 +231,37 @@ X = [1 1 1; 2 1 1; 3 1 1; 1 2 1; 2 2 1; 3 2 1; 1 3 1; 2 3 1; 3 3 1;
  f4 = zeros(6*N, 1);
  f5 = zeros(6*N, 1);
  f6 = zeros(6*N, 1);
- f1(2, 1) = 1; f1(8, 1) = 1; f1(20, 1) = 1; f1(26, 1) = 1; f1(32, 1) = 1; f1(38, 1) = 1; f1(44, 1) = 1; f1(50, 1) = 1; 
- f2(2, 1) = 1;
- f3(3, 1) = 1;
- f4(4, 1) = 1;
- f5(5, 1) = 1;
- f6(6, 1) = 1;
- for i = 1:N
-     ep1(6*(i-1)+1:6*i, 1) = CZERO\f1(6*(i-1)+1:6*i, 1);
+ f1(1, 1) = 1; f1(7, 1) = 1; f1(19, 1) = 1; f1(25, 1) = 1; f1(31, 1) = 1; f1(37, 1) = 1; f1(43, 1) = 1; f1(49, 1) = 1;
+ for i = 1:6
+     f1(6*(i-1)+1, 1) = 1;
+     f2(6*(i-1)+2, 1) = 1;
+     f3(6*(i-1)+3, 1) = 1;
+     f4(6*(i-1)+4, 1) = 1;
+     f5(6*(i-1)+5, 1) = 1;
+     f6(6*(i-1)+6, 1) = 1;
  end
-%  for i = 1:N
-%      ep1(6*(i - 1) + 1, 1) = 1;
-%      ep2(6*(i - 1) + 2, 1) = 1;
-%      ep3(6*(i - 1) + 3, 1) = 1;
-%      ep4(6*(i - 1) + 4, 1) = 1;
-%      ep5(6*(i - 1) + 5, 1) = 1;
-%      ep6(6*(i - 1) + 6, 1) = 1;
-%  end
+ for i = 1:N
+     ep1(6*(i-1)+1:6*i, 1) = CBIG\f1(6*(i-1)+1:6*i, 1);
+     ep2(6*(i-1)+1:6*i, 1) = CBIG\f2(6*(i-1)+1:6*i, 1);
+     ep3(6*(i-1)+1:6*i, 1) = CBIG\f3(6*(i-1)+1:6*i, 1);
+     ep4(6*(i-1)+1:6*i, 1) = CBIG\f4(6*(i-1)+1:6*i, 1);
+     ep5(6*(i-1)+1:6*i, 1) = CBIG\f5(6*(i-1)+1:6*i, 1);
+     ep6(6*(i-1)+1:6*i, 1) = CBIG\f6(6*(i-1)+1:6*i, 1);
+ end
+
  temp = B*DC;
  eps1 = inv(temp)*ep1;
-%  eps2 = pinv(temp)*ep2;
-%  eps3 = pinv(temp)*ep3;
-%  eps4 = pinv(temp)*ep4;
-%  eps5 = pinv(temp)*ep5;
-%  eps6 = pinv(temp)*ep6;
+ eps2 = inv(temp)*ep2;
+ eps3 = inv(temp)*ep3;
+ eps4 = inv(temp)*ep4;
+ eps5 = inv(temp)*ep5;
+ eps6 = inv(temp)*ep6;
  sigma1 = Comp*eps1;
-%  sigma2 = Comp*eps2;
-%  sigma3 = Comp*eps3;
-%  sigma4 = Comp*eps4;
-%  sigma5 = Comp*eps5;
-%  sigma6 = Comp*eps6;
+ sigma2 = Comp*eps2;
+ sigma3 = Comp*eps3;
+ sigma4 = Comp*eps4;
+ sigma5 = Comp*eps5;
+ sigma6 = Comp*eps6;
  
 epep = zeros(6, 6);
 sigsig = zeros(6, 6);
@@ -266,15 +269,20 @@ for i = 1:6
     for j = 1:N
         epep(i, 1) = epep(i, 1) + eps1(j*(i - 1) + 1)/N;
         sigsig(i, 1) = sigsig(i, 1) + sigma1(j*(i - 1) + 1)/N;
-%         epep(i, 2) = epep(i, 2) + eps2(j*(i - 1) + 1)/N;
-%         sigsig(i, 2) = sigsig(i, 2) + sigma2(j*(i - 1) + 1)/N;
-%         epep(i, 3) = epep(i, 3) + eps3(j*(i - 1) + 1)/N;
-%         sigsig(i, 3) = sigsig(i, 3) + sigma3(j*(i - 1) + 1)/N;
-%         epep(i, 4) = epep(i, 4) + eps4(j*(i - 1) + 1)/N;
-%         sigsig(i, 4) = sigsig(i, 4) + sigma4(j*(i - 1) + 1)/N;
-%         epep(i, 5) = epep(i, 5) + eps5(j*(i - 1) + 1)/N;
-%         sigsig(i, 5) = sigsig(i, 5) + sigma5(j*(i - 1) + 1)/N;
-%         epep(i, 6) = epep(i, 6) + eps6(j*(i - 1) + 1)/N;
-%         sigsig(i, 6) = sigsig(i, 6) + sigma6(j*(i - 1) + 1)/N;
+        epep(i, 2) = epep(i, 2) + eps2(j*(i - 1) + 1)/N;
+        sigsig(i, 2) = sigsig(i, 2) + sigma2(j*(i - 1) + 1)/N;
+        epep(i, 3) = epep(i, 3) + eps3(j*(i - 1) + 1)/N;
+        sigsig(i, 3) = sigsig(i, 3) + sigma3(j*(i - 1) + 1)/N;
+        epep(i, 4) = epep(i, 4) + eps4(j*(i - 1) + 1)/N;
+        sigsig(i, 4) = sigsig(i, 4) + sigma4(j*(i - 1) + 1)/N;
+        epep(i, 5) = epep(i, 5) + eps5(j*(i - 1) + 1)/N;
+        sigsig(i, 5) = sigsig(i, 5) + sigma5(j*(i - 1) + 1)/N;
+        epep(i, 6) = epep(i, 6) + eps6(j*(i - 1) + 1)/N;
+        sigsig(i, 6) = sigsig(i, 6) + sigma6(j*(i - 1) + 1)/N;
     end
 end
+
+ee = [eps1 eps2 eps3 eps4 eps5 eps6];
+ss = [sigma1 sigma2 sigma3 sigma4 sigma5 sigma6];
+
+cfinal = ss*pinv(ee);
